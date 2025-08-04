@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "command": "pnpm run dev",
+      "label": "Dev",
+      "problemMatcher": []
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run build",
+      "label": "Build",
+      "problemMatcher": []
+    },
+    {
+      "type": "shell",
+      "command": "pnpm run preview",
+      "label": "Preview",
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content'
+import BaseHead from '../../components/BaseHead.astro'
+import Footer from '../../components/Footer.astro'
+import Header from '../../components/Header.astro'
+import BlogListItem from '../../components/BlogListItem.astro'
+import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts'
+
+export interface Props {
+  per_page?: number
+}
+const { per_page = 5 } = Astro.props
+
+const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    <style>
+      .posts {
+        display: grid;
+        gap: 2rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <section>
+        <ul class="posts">
+          {posts.map((post) => <BlogListItem post={post} />)}
+        </ul>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>

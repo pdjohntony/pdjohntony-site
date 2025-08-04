@@ -1,0 +1,77 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import FormattedDate from './FormattedDate.astro'
+
+export interface Props {
+  post: CollectionEntry<'blog'>
+}
+
+const { post } = Astro.props
+---
+
+<li class="post">
+  <a href={`/blog/${post.id}/`}>
+    <h3 class="title">{post.data.title}</h3>
+    <p class="date">
+      <FormattedDate date={post.data.pubDate} />
+    </p>
+  </a>
+    <ul class="tags">
+      {post.data.tags?.map((tag) => (
+        <li class="tag">
+          <a href={`/tags/${tag}`}>{tag}</a>
+        </li>
+      ))}
+    </ul>
+</li>
+
+<style>
+  .post {
+    list-style: none;
+  }
+  .post * {
+    text-decoration: none;
+    transition: 0.2s ease;
+  }
+  .title {
+    margin: 0;
+    color: var(--primary);
+    /* font-size: 1.5rem; */
+    /* line-height: 1; */
+  }
+  .date {
+    margin: 0;
+    color: var(--secondary);
+    font-size: 1rem;
+    font-style: italic;
+  }
+  .title:hover,
+  .date:hover {
+    color: var(--accent);
+  }
+  .tags {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .tag {
+    display: block;
+  }
+  .tag a {
+    display: block;
+    background-color: var(--background-6);
+    color: var(--primary);
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: 0.2s ease;
+    text-decoration: none;
+  }
+  .tag a:hover {
+    background-color: var(--primary);
+    color: var(--secondary);
+  }
+</style>
