@@ -1,12 +1,15 @@
 ---
 import { getCollection } from 'astro:content'
-import BaseHead from '../components/BaseHead.astro'
-import Footer from '../components/Footer.astro'
-import Header from '../components/Header.astro'
-import BlogListItem from '../components/BlogListItem.astro'
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts'
+import BaseHead from '../components/base-head.astro'
+import BlogListItem from '../components/blog-list-item.astro'
+import Footer from '../components/footer.astro'
+import Header from '../components/header.astro'
 
-const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+const blogPosts = await getCollection('blog')
+const posts = blogPosts.toSorted(
+  (firstPost, secondPost) => secondPost.data.pubDate.valueOf() - firstPost.data.pubDate.valueOf(),
+)
 ---
 
 <!doctype html>

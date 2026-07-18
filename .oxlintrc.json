@@ -8,7 +8,10 @@
     "perf": "warn",
     "style": "warn"
   },
-  "rules": {},
+  "rules": {
+    "eslint/sort-imports": "off",
+    "typescript/prefer-readonly-parameter-types": "off"
+  },
   "options": {
     "typeAware": true
   },
