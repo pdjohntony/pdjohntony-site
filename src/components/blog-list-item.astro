@@ -10,10 +10,10 @@ export interface Props {
 const { post } = Astro.props
 ---
 
-<a href={`/blog/${post.id}/`} class="group flex flex-col border-t border-border pt-[22px] pb-[26px]">
+<a href={`/blog/${post.id}/`} class="group flex flex-col border-t border-border pt-5.5 pb-6.5">
   <h2 class="pb-1.5 text-[19px] font-bold transition-colors group-hover:text-accent-hover">{post.data.title}</h2>
   <p class="pb-2 text-[15px] leading-[1.55] text-muted">{post.data.description}</p>
-  <div class="flex gap-[18px] text-[13px] text-faint lowercase">
+  <div class="flex gap-4.5 text-[13px] text-faint lowercase">
     <FormattedDate date={post.data.pubDate} />
     {post.data.tags?.map((tag) => <span>{tag}</span>)}
   </div>
@@ -23,7 +23,7 @@ const { post } = Astro.props
         src={post.data.heroImage}
         width={1160}
         height={560}
-        class="mt-4 h-[280px] w-full rounded-[10px] object-cover"
+        class="mt-4 h-70 w-full rounded-[10px] object-cover"
         alt=""
       />
     )
