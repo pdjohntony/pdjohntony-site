@@ -1,7 +1,5 @@
 ---
-import '../styles/global.css'
-import '@fontsource-variable/dm-sans'
-import dmSansWoff2 from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url'
+import '../style.css'
 import type { ImageMetadata } from 'astro'
 import FallbackImage from '../assets/site-default.jpg'
 import { SITE_TITLE } from '../consts'
@@ -26,7 +24,7 @@ const { title, description, image = FallbackImage } = Astro.props
 <meta name="generator" content={Astro.generator} />
 
 <!-- Font preloads -->
-<link rel="preload" as="font" type="font/woff2" href={dmSansWoff2} crossorigin />
+<!-- <link rel="preload" as="font" type="font/woff2" href="" crossorigin /> -->
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
