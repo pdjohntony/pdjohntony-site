@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content'
+import { Image } from 'astro:assets'
 import FormattedDate from './formatted-date.astro'
 
 export interface Props {
@@ -9,20 +10,22 @@ export interface Props {
 const { post } = Astro.props
 ---
 
-<li class="post">
-  <a href={`/blog/${post.id}/`}>
-    <h3 class="title">{post.data.title}</h3>
-    <p class="date">
-      <FormattedDate date={post.data.pubDate} />
-    </p>
-  </a>
-  <ul class="tags">
-    {
-      post.data.tags?.map((tag) => (
-        <li class="tag">
-          <a href={`/tags/${tag}`}>{tag}</a>
-        </li>
-      ))
-    }
-  </ul>
-</li>
+<a href={`/blog/${post.id}/`} class="group flex flex-col border-t border-border pt-[22px] pb-[26px]">
+  <h2 class="pb-1.5 text-[19px] font-bold transition-colors group-hover:text-accent-hover">{post.data.title}</h2>
+  <p class="pb-2 text-[15px] leading-[1.55] text-muted">{post.data.description}</p>
+  <div class="flex gap-[18px] text-[13px] text-faint lowercase">
+    <FormattedDate date={post.data.pubDate} />
+    {post.data.tags?.map((tag) => <span>{tag}</span>)}
+  </div>
+  {
+    post.data.heroImage && (
+      <Image
+        src={post.data.heroImage}
+        width={1160}
+        height={560}
+        class="mt-4 h-[280px] w-full rounded-[10px] object-cover"
+        alt=""
+      />
+    )
+  }
+</a>

@@ -1,10 +1,10 @@
 ---
-import { getCollection } from 'astro:content'
 import BlogListItem from '../../components/blog-list-item.astro'
 import BaseLayout from '../../layouts/base-layout.astro'
+import { getSortedPosts } from '../../lib/posts'
 
 export const getStaticPaths = async () => {
-  const allPosts = await getCollection('blog')
+  const allPosts = await getSortedPosts()
 
   const uniqueTags = [...new Set(allPosts.flatMap((post) => post.data.tags ?? []))]
 
@@ -19,11 +19,23 @@ export const getStaticPaths = async () => {
 
 const { tag } = Astro.params
 const { posts } = Astro.props
+
+const SINGLE_POST = 1
+let countLabel = `${posts.length} posts`
+if (posts.length === SINGLE_POST) {
+  countLabel = '1 post'
+}
 ---
 
-<BaseLayout title={tag ?? ''} description={`Posts tagged with ${tag}`}>
-  <h2>Posts tagged with "{tag}" <span class="total">{posts.length}</span></h2>
-  <ul class="posts">
+<BaseLayout title={tag} description={`Posts tagged with ${tag}`}>
+  <div class="mt-4 mb-5 flex items-baseline justify-between gap-4">
+    <h1 class="text-[32px] font-extrabold tracking-[-0.02em] lowercase">{tag}</h1>
+    <span class="text-[13px] text-faint">{countLabel}</span>
+  </div>
+  <div class="flex flex-col">
     {posts.map((post) => <BlogListItem post={post} />)}
-  </ul>
+    <div class="flex justify-end border-t border-border pt-5">
+      <a href="/blog" class="text-sm text-accent transition-colors hover:text-accent-hover">all posts</a>
+    </div>
+  </div>
 </BaseLayout>

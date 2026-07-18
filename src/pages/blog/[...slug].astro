@@ -13,8 +13,14 @@ type Props = CollectionEntry<'blog'>
 
 const post = Astro.props
 const { Content } = await render(post)
+
+const WORDS_PER_MINUTE = 200
+const EMPTY_WORD_COUNT = 0
+const MINIMUM_MINUTES = 1
+const wordCount = post.body?.split(/\s+/gu).length ?? EMPTY_WORD_COUNT
+const minutesRead = Math.max(MINIMUM_MINUTES, Math.round(wordCount / WORDS_PER_MINUTE))
 ---
 
-<BlogPost {...post.data}>
+<BlogPost {...post.data} minutesRead={minutesRead}>
   <Content />
 </BlogPost>

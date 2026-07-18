@@ -1,0 +1,18 @@
+---
+import BlogPage from '../../components/blog-page.astro'
+import { type BlogPageData, FIRST_PAGE, getBlogPages } from '../../lib/posts'
+
+export const getStaticPaths = async () => {
+  const pages = await getBlogPages()
+  return pages
+    .filter((page) => page.currentPage > FIRST_PAGE)
+    .map((page) => ({
+      params: { page: String(page.currentPage) },
+      props: page,
+    }))
+}
+
+type Props = BlogPageData
+---
+
+<BlogPage {...Astro.props} />

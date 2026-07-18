@@ -1,39 +1,42 @@
 ---
-import { getCollection } from 'astro:content'
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts'
-import BaseHead from '../components/base-head.astro'
 import BlogListItem from '../components/blog-list-item.astro'
-import Footer from '../components/footer.astro'
-import Header from '../components/header.astro'
+import { SITE_DESCRIPTION } from '../consts'
+import BaseLayout from '../layouts/base-layout.astro'
+import { getSortedPosts } from '../lib/posts'
 
-const blogPosts = await getCollection('blog')
-const posts = blogPosts.toSorted(
-  (firstPost, secondPost) => secondPost.data.pubDate.valueOf() - firstPost.data.pubDate.valueOf(),
-)
+const HOME_LIST_START = 0
+const HOME_POST_COUNT = 3
+const sortedPosts = await getSortedPosts()
+const posts = sortedPosts.slice(HOME_LIST_START, HOME_POST_COUNT)
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-  </head>
-  <body>
-    <Header />
-    <main>
-      <h1>Phill Johntony</h1>
-      <h3>Software Engineer in Ohio</h3>
-      <p>
-        Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template serves as a
-        lightweight, minimally-styled starting point for anyone looking to build a personal website, blog, or portfolio with
-        Astro.
-      </p>
-
-      <section>
-        <ul class="posts">
-          {posts.map((post) => <BlogListItem post={post} />)}
-        </ul>
-      </section>
-    </main>
-    <Footer />
-  </body>
-</html>
+<BaseLayout description={SITE_DESCRIPTION}>
+  <h1 class="mt-4 mb-5 text-[44px] leading-[1.1] font-extrabold tracking-[-0.03em]">
+    hey, i'm phill.<br />
+    <span class="text-muted">i build things and write about it.</span>
+  </h1>
+  <p class="mb-11 max-w-[480px] text-[17px] leading-[1.65] text-muted">
+    engineer in ohio. mostly backend stuff by day, half-finished side projects by night. sometimes i leave the country
+    and write that up too.
+  </p>
+  <section class="flex flex-col">
+    {posts.map((post) => <BlogListItem post={post} />)}
+    <div class="flex justify-end border-t border-border pt-5">
+      <a href="/blog" class="flex items-center gap-1 text-sm text-accent transition-colors hover:text-accent-hover">
+        all posts
+        <svg
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

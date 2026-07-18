@@ -26,9 +26,10 @@
 
 ## Styling
 
+- Follow `DESIGN.md` for palette, type, layout, and voice rules. Color and font tokens are defined once in `src/style.css`; never hardcode a hex elsewhere.
 - Use Tailwind utility classes whenever possible. Avoid writing custom CSS when Tailwind can express the styling.
-- Keep `src/style.css` limited to the Tailwind import and truly global rules or styles that cannot reasonably be expressed with Tailwind utilities.
+- Keep `src/style.css` limited to the Tailwind import, the `@theme` tokens, and truly global rules or styles that cannot reasonably be expressed with Tailwind utilities.
 
 ## Formatting
 
-- `oxfmt` sorts imports and `package.json`, uses no semicolons and single quotes, and ignores `.astro/` and `dist/`. `.editorconfig` specifies CRLF line endings; do not normalize the repository to LF incidentally.
+- `oxfmt` sorts imports and `package.json`, uses no semicolons and single quotes, and ignores `.astro/` and `dist/`.

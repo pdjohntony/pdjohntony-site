@@ -6,11 +6,11 @@
   "semi": false,
   "singleQuote": true,
   "trailingComma": "all",
-  "ignorePatterns": ["node_modules/**", ".astro/**", "dist/**"],
+  "ignorePatterns": ["node_modules/**", ".astro/**", "dist/**", ".local/**"],
   "sortImports": true,
   "sortPackageJson": true,
   "sortTailwindcss": {
-    "stylesheet": "./src/styles/global.css",
+    "stylesheet": "./src/style.css",
     "functions": ["clsx", "cn"],
     "preserveWhitespace": true
   }

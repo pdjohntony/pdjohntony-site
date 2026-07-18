@@ -1,0 +1,80 @@
+---
+import { SITE_DESCRIPTION } from '../consts'
+import BaseLayout from '../layouts/base-layout.astro'
+import { type BlogPageData, FIRST_PAGE, PAGE_STEP } from '../lib/posts'
+import BlogListItem from './blog-list-item.astro'
+
+export type Props = BlogPageData
+
+const { posts, tags, currentPage, totalPages } = Astro.props
+const hasNewer = currentPage > FIRST_PAGE
+const hasOlder = currentPage < totalPages
+const previousPage = currentPage - PAGE_STEP
+let newerHref = `/blog/${previousPage}`
+if (previousPage === FIRST_PAGE) {
+  newerHref = '/blog'
+}
+const olderHref = `/blog/${currentPage + PAGE_STEP}`
+---
+
+<BaseLayout title="blog" description={SITE_DESCRIPTION}>
+  <div class="mt-4 mb-5 flex flex-wrap items-baseline justify-between gap-4">
+    <h1 class="text-[32px] font-extrabold tracking-[-0.02em]">blog</h1>
+    <div class="flex flex-wrap items-baseline justify-end gap-4 text-[13px]">
+      {
+        tags.map((tag) => (
+          <a href={`/tags/${tag}/`} class="text-faint transition-colors hover:text-accent-hover">
+            {tag}
+          </a>
+        ))
+      }
+      <a href="/rss.xml" class="text-faint transition-colors hover:text-accent-hover">rss</a>
+    </div>
+  </div>
+  <div class="flex flex-col">
+    {posts.map((post) => <BlogListItem post={post} />)}
+    <div class="flex items-baseline justify-between border-t border-border pt-6 text-sm">
+      {
+        hasNewer && (
+          <a href={newerHref} class="flex items-center gap-1.5 text-muted transition-colors hover:text-accent-hover">
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+            newer
+          </a>
+        )
+      }
+      {!hasNewer && <span class="text-disabled">newer</span>}
+      <span class="text-[13px] text-faint">page {currentPage} of {totalPages}</span>
+      {
+        hasOlder && (
+          <a href={olderHref} class="flex items-center gap-1.5 text-muted transition-colors hover:text-accent-hover">
+            older
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </a>
+        )
+      }
+      {!hasOlder && <span class="text-disabled">older</span>}
+    </div>
+  </div>
+</BaseLayout>
