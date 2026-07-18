@@ -16,13 +16,15 @@ const { post } = Astro.props
       <FormattedDate date={post.data.pubDate} />
     </p>
   </a>
-    <ul class="tags">
-      {post.data.tags?.map((tag) => (
+  <ul class="tags">
+    {
+      post.data.tags?.map((tag) => (
         <li class="tag">
           <a href={`/tags/${tag}`}>{tag}</a>
         </li>
-      ))}
-    </ul>
+      ))
+    }
+  </ul>
 </li>
 
 <style>
@@ -61,7 +63,7 @@ const { post } = Astro.props
   }
   .tag a {
     display: block;
-    background-color: var(--background-6);
+    background-color: var(--background-800);
     color: var(--primary);
     padding: 0.1rem 0.5rem;
     border-radius: 4px;

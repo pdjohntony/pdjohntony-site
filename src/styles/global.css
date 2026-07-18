@@ -1,9 +1,75 @@
 :root {
+  /* Base color palette - change these to update your entire color scheme */
   --text: oklch(94.21% 0.013 244.26);
   --background: oklch(20.13% 0.015 248.58);
   --primary: oklch(75.16% 0.082 249.52);
   --secondary: oklch(44% 0.112 251.8);
   --accent: oklch(60.54% 0.174 253.44);
+
+  /* Dynamic text color shades - text is very light (94%), so it sits near the top */
+  --text-50: oklch(from var(--text) calc(l + 0.04) c h);
+  --text-100: var(--text);
+  --text-200: oklch(from var(--text) calc(l - 0.08) c h);
+  --text-300: oklch(from var(--text) calc(l - 0.16) c h);
+  --text-400: oklch(from var(--text) calc(l - 0.24) c h);
+  --text-500: oklch(from var(--text) calc(l - 0.32) c h);
+  --text-600: oklch(from var(--text) calc(l - 0.4) c h);
+  --text-700: oklch(from var(--text) calc(l - 0.48) c h);
+  --text-800: oklch(from var(--text) calc(l - 0.56) c h);
+  --text-900: oklch(from var(--text) calc(l - 0.64) c h);
+  --text-950: oklch(from var(--text) calc(l - 0.72) c h);
+
+  /* Dynamic background color shades - background is very dark (20%), so it sits near the bottom */
+  --background-50: oklch(from var(--background) calc(l + 0.75) c h);
+  --background-100: oklch(from var(--background) calc(l + 0.68) c h);
+  --background-200: oklch(from var(--background) calc(l + 0.6) c h);
+  --background-300: oklch(from var(--background) calc(l + 0.52) c h);
+  --background-400: oklch(from var(--background) calc(l + 0.44) c h);
+  --background-500: oklch(from var(--background) calc(l + 0.36) c h);
+  --background-600: oklch(from var(--background) calc(l + 0.28) c h);
+  --background-700: oklch(from var(--background) calc(l + 0.2) c h);
+  --background-800: oklch(from var(--background) calc(l + 0.12) c h);
+  --background-900: var(--background);
+  --background-950: oklch(from var(--background) calc(l - 0.04) c h);
+
+  /* Dynamic primary color shades - primary is mid-range (75%), so it sits around 300-400 */
+  --primary-50: oklch(from var(--primary) calc(l + 0.2) c h);
+  --primary-100: oklch(from var(--primary) calc(l + 0.16) c h);
+  --primary-200: oklch(from var(--primary) calc(l + 0.12) c h);
+  --primary-300: oklch(from var(--primary) calc(l + 0.08) c h);
+  --primary-400: var(--primary);
+  --primary-500: oklch(from var(--primary) calc(l - 0.08) c h);
+  --primary-600: oklch(from var(--primary) calc(l - 0.16) c h);
+  --primary-700: oklch(from var(--primary) calc(l - 0.24) c h);
+  --primary-800: oklch(from var(--primary) calc(l - 0.32) c h);
+  --primary-900: oklch(from var(--primary) calc(l - 0.4) c h);
+  --primary-950: oklch(from var(--primary) calc(l - 0.48) c h);
+
+  /* Dynamic secondary color shades - secondary is darker (44%), so it sits around 600-700 */
+  --secondary-50: oklch(from var(--secondary) calc(l + 0.48) c h);
+  --secondary-100: oklch(from var(--secondary) calc(l + 0.4) c h);
+  --secondary-200: oklch(from var(--secondary) calc(l + 0.32) c h);
+  --secondary-300: oklch(from var(--secondary) calc(l + 0.24) c h);
+  --secondary-400: oklch(from var(--secondary) calc(l + 0.16) c h);
+  --secondary-500: oklch(from var(--secondary) calc(l + 0.08) c h);
+  --secondary-600: var(--secondary);
+  --secondary-700: oklch(from var(--secondary) calc(l - 0.08) c h);
+  --secondary-800: oklch(from var(--secondary) calc(l - 0.16) c h);
+  --secondary-900: oklch(from var(--secondary) calc(l - 0.24) c h);
+  --secondary-950: oklch(from var(--secondary) calc(l - 0.32) c h);
+
+  /* Dynamic accent color shades - accent is mid-range (60%), so it sits at 500 */
+  --accent-50: oklch(from var(--accent) calc(l + 0.32) c h);
+  --accent-100: oklch(from var(--accent) calc(l + 0.24) c h);
+  --accent-200: oklch(from var(--accent) calc(l + 0.2) c h);
+  --accent-300: oklch(from var(--accent) calc(l + 0.16) c h);
+  --accent-400: oklch(from var(--accent) calc(l + 0.08) c h);
+  --accent-500: var(--accent);
+  --accent-600: oklch(from var(--accent) calc(l - 0.08) c h);
+  --accent-700: oklch(from var(--accent) calc(l - 0.16) c h);
+  --accent-800: oklch(from var(--accent) calc(l - 0.24) c h);
+  --accent-900: oklch(from var(--accent) calc(l - 0.32) c h);
+  --accent-950: oklch(from var(--accent) calc(l - 0.4) c h);
 
   --black: 15, 18, 25;
   --gray: 96, 115, 159;
@@ -12,17 +78,6 @@
   --gray-gradient: rgba(var(--gray-light), 50%), #fff;
   --box-shadow: 0 2px 6px rgba(var(--gray), 25%),
     0 8px 24px rgba(var(--gray), 33%), 0 16px 32px rgba(var(--gray), 33%);
-
-  --background-1: oklch(from var(--background) calc(l + 0.35) c h);
-  --background-2: oklch(from var(--background) calc(l + 0.25) c h);
-  --background-3: oklch(from var(--background) calc(l + 0.15) c h);
-  --background-4: oklch(from var(--background) calc(l + 0.07) c h);
-  --background-5: var(--background);
-  --background-6: oklch(from var(--background) calc(l - 0.07) c h);
-  --background-7: oklch(from var(--background) calc(l - 0.15) c h);
-  --background-8: oklch(from var(--background) calc(l - 0.22) c h);
-  --background-9: oklch(from var(--background) calc(l - 0.3) c h);
-  --background-10: oklch(from var(--background) calc(l - 0.4) c h);
 }
 body {
   font-family: "DM Sans Variable", sans-serif;
@@ -101,7 +156,7 @@ img {
 }
 code {
   padding: 2px 5px;
-  background-color: var(--background-4);
+  background-color: var(--background-400);
   border-radius: 2px;
 }
 pre {
