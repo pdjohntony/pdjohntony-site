@@ -20,7 +20,7 @@ export const GET: APIRoute = async ({ site }) => {
   return rss({
     description: SITE_DESCRIPTION,
     items,
-    site,
+    site: site ?? 'http://localhost',
     title: SITE_TITLE,
   })
 }

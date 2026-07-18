@@ -7,5 +7,5 @@ import { defineConfig } from 'astro/config'
 // https://astro.build/config
 export default defineConfig({
   integrations: [mdx(), sitemap()],
-  site: 'https://example.com',
+  site: 'https://philljohntony.com',
 })
