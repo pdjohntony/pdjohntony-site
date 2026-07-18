@@ -1,9 +1,9 @@
 ---
-title: 'An intro to Windows AI Foundry'
-description: 'A good description'
+title: 'Microsoft is betting big on local AI'
+description: 'I flew to Seattle to learn how Microsoft is making it easier to integrate local AI into apps.'
 pubDate: 'Aug 06 2025'
 heroImage: '../../assets/site-default.jpg'
-tags: ['travel', 'learning']
+tags: ['travel', 'learning', 'microsoft', 'ai']
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
