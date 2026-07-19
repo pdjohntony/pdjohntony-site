@@ -16,6 +16,10 @@
 - Production verification: `pnpm build`; run this after changing Astro files, routes, assets, or content. `pnpm typecheck` is only `tsc --noEmit` and can pass when Astro templates or Markdown frontmatter fail to build.
 - There is no test suite or CI workflow. Use formatting, lint, typecheck, and the production build as the verification set.
 
+## Git Workflow
+
+- Commit all work directly to `main`; do not create feature branches.
+
 ## Site Wiring
 
 - `src/pages/` is the route surface. Blog and tag parameter routes are statically expanded with `getStaticPaths`; no server adapter is configured.
