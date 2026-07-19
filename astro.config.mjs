@@ -6,6 +6,10 @@ import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig, fontProviders } from 'astro/config'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeCallouts from 'rehype-callouts'
+import remarkAdmonitionToBlockquoteCallout from 'remark-admonition-to-blockquote-callout'
+
+import { rehypeTitlelessCallouts, remarkTitlelessCallouts } from './src/lib/markdown-callouts.ts'
 
 // https://astro.build/config
 export default defineConfig({
@@ -36,7 +40,10 @@ export default defineConfig({
             test: ['h2', 'h3'],
           },
         ],
+        rehypeCallouts,
+        rehypeTitlelessCallouts,
       ],
+      remarkPlugins: [remarkTitlelessCallouts, remarkAdmonitionToBlockquoteCallout],
     }),
   },
   site: 'https://philljohntony.com',

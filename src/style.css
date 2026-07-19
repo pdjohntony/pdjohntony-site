@@ -19,6 +19,11 @@
   --color-accent-hover: #7d97ff;
   --color-prose: #b8b8c2;
   --color-code-bg: #121216;
+  --color-callout-note: #8fa5d8;
+  --color-callout-tip: #83af91;
+  --color-callout-warning: #bea16b;
+  --color-callout-danger: #c2878d;
+  --color-callout-quote: #9696a1;
 }
 
 @view-transition {

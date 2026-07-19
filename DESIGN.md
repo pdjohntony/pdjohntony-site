@@ -26,6 +26,7 @@ All colors are Tailwind `@theme` tokens defined in `src/style.css` — that file
 Rules:
 
 - One accent. Never introduce a second hue. If something needs emphasis without accent, use weight or `text-text` on a `text-muted` baseline.
+- Semantic callouts are the exception: informational, positive, caution, destructive, and quote families use muted blue, green, amber, red, and neutral tokens. Keep the color confined to the callout surface, label, and icon.
 - Accent is for _interactive or current_ things (links, active nav, hover) — not decoration.
 - No gradients, no glows, no colored backgrounds.
 
@@ -84,7 +85,7 @@ Level: subtle. Nothing longer than 400ms, nothing that moves more than 12px.
 - **Prose:** 17px/1.75 in `text-prose`. Headings in `text-text`: h2 24px/800 with 52px top margin, h3 19px/700. Paragraph gap 24px. Styled via arbitrary variants on the content wrapper in `src/layouts/blog-post.astro`.
 - **Code:** `ui-monospace` stack (`font-mono`), no webfont. Blocks on `bg-code-bg`; inline code as small `bg-code-bg` chips. _(Filename/language headers with a copy action: not implemented yet.)_
 - **Quotes:** hairline left border, 18px muted text, faint attribution line.
-- **Callouts — not implemented yet:** `bg-surface` rounded box with an uppercase accent label (note / heads up). No border, no icon. Use a blockquote in the meantime.
+- **Callouts:** borderless rounded surface with a compact uppercase label and type-specific icon. Markdown uses `!!! type`, followed by an indented body; add a quoted title after the type to override the label, or use an empty title (`!!! type ""`) to remove the title row. Supported informational types are note, abstract, summary, tldr, info, todo, question, help, faq, and example; positive types are tip, hint, important, success, check, and done; caution types are warning, attention, and caution; destructive types are failure, missing, fail, danger, error, and bug; quote and cite are neutral.
 - **Tables:** hairline row dividers only, uppercase faint headers, key values in `text-text` 700.
 - **Images:** full-column, rounded, 13px faint centered captions.
 - **TOC:** sticky right of the column (hidden < 1280px), bold muted label, 13px items (h3s indented), active section in accent via native CSS scrollspy; 2px accent reading-progress bar at viewport top.

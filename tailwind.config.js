@@ -28,6 +28,59 @@ export default {
               fontStyle: 'normal',
               lineHeight: '1.6',
             },
+            '.callout': {
+              '--callout-color': 'var(--color-callout-note)',
+              marginTop: '2rem',
+              marginBottom: '2rem',
+              borderRadius: '10px',
+              backgroundColor: 'color-mix(in srgb, var(--callout-color) 8%, var(--color-surface))',
+              padding: '1.125rem 1.375rem',
+            },
+            ".callout[data-callout='tip'], .callout[data-callout='hint'], .callout[data-callout='important'], .callout[data-callout='success'], .callout[data-callout='check'], .callout[data-callout='done']":
+              {
+                '--callout-color': 'var(--color-callout-tip)',
+              },
+            ".callout[data-callout='warning'], .callout[data-callout='attention'], .callout[data-callout='caution']": {
+              '--callout-color': 'var(--color-callout-warning)',
+            },
+            ".callout[data-callout='failure'], .callout[data-callout='missing'], .callout[data-callout='fail'], .callout[data-callout='danger'], .callout[data-callout='error'], .callout[data-callout='bug']":
+              {
+                '--callout-color': 'var(--color-callout-danger)',
+              },
+            ".callout[data-callout='quote'], .callout[data-callout='cite']": {
+              '--callout-color': 'var(--color-callout-quote)',
+            },
+            '.callout-title': {
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              marginBottom: '0.5rem',
+              color: 'var(--callout-color)',
+              fontSize: '0.75rem',
+              fontWeight: '700',
+              letterSpacing: '0.08em',
+              lineHeight: '1.25rem',
+              textTransform: 'uppercase',
+            },
+            '.callout-title-icon': {
+              display: 'flex',
+              flexShrink: '0',
+            },
+            '.callout-title-icon svg': {
+              width: '1rem',
+              height: '1rem',
+            },
+            '.callout-content': {
+              color: 'var(--color-prose)',
+              fontSize: '15px',
+              lineHeight: '1.65',
+            },
+            '.callout-content > :first-child': {
+              marginTop: '0',
+            },
+            '.callout-content > :last-child': {
+              marginBottom: '0',
+            },
             'blockquote p': {
               marginBottom: '0.625rem',
             },

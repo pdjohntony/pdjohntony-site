@@ -8,3 +8,6 @@ tags: ['dev']
 An honest accounting of every docker incident in the homelab this year, all of which were my fault.
 
 Highlights include: a volume mount that pointed at the wrong directory for three months, a `latest` tag that did exactly what `latest` tags do, and a healthcheck that reported healthy while the app served nothing but 502s. Lessons were learned. Some of them twice.
+
+!!! warning "The boring fix"
+Pin image versions, then make dependency updates a deliberate job. `latest` saves a few keystrokes right up until it turns a routine restart into an incident.

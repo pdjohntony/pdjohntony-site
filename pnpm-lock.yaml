@@ -26,6 +26,12 @@ importers:
       rehype-autolink-headings:
         specifier: ^7.1.0
         version: 7.1.0
+      rehype-callouts:
+        specifier: ^2.2.0
+        version: 2.2.0
+      remark-admonition-to-blockquote-callout:
+        specifier: ^1.0.0
+        version: 1.0.0
       sharp:
         specifier: ^0.35.3
         version: 0.35.3(@types/node@24.13.3)
@@ -2371,6 +2377,10 @@ packages:
   rehype-autolink-headings@7.1.0:
     resolution: {integrity: sha512-rItO/pSdvnvsP4QRB1pmPiNHUskikqtPojZKJPPPAVx9Hj8i8TwMBhofrrAYRhYOOBZH9tgmG5lPqDLuIWPWmw==}
 
+  rehype-callouts@2.2.0:
+    resolution: {integrity: sha512-snwN1LkjLM3SuymqpsoLonoJ8gVy5yJN9WztBiyj8HAAj5Mv3Fez5vFzVwscLQdzMZo27xv2FycGzAGDkT4dNw==}
+    engines: {node: '>=18.0.0'}
+
   rehype-raw@7.0.0:
     resolution: {integrity: sha512-/aE8hCfKlQeA8LmyeyQvQF3eBiLRGNlfBJEvWH7ivp9sBqs7TNqBL5X3v157rM4IFETqDnIOO+z5M/biZbo9Ww==}
 
@@ -2379,6 +2389,10 @@ packages:
 
   rehype-stringify@10.0.1:
     resolution: {integrity: sha512-k9ecfXHmIPuFVI61B9DeLPN0qFHfawM6RsuX48hoqlaKSF61RskNjSm1lI8PhBEM0MRdLxVVm4WmTqJQccH9mA==}
+
+  remark-admonition-to-blockquote-callout@1.0.0:
+    resolution: {integrity: sha512-mDVqlEmopZb3Y6IcUCfC3qrSEXHUQy+EOOzAOYfobJ8JkLiIA05Qyo9nTysZvgCJfNpQdqq2hl9cJMnvIdNISg==}
+    engines: {node: '>=16.0.0'}
 
   remark-gfm@4.0.1:
     resolution: {integrity: sha512-1quofZ2RQ9EWdeN34S79+KExV1764+wCUGop5CPL1WGdD0ocPpu91lzPGbwWMECpEpd42kJGQwzRfyov9j4yNg==}
@@ -5090,6 +5104,14 @@ snapshots:
       unified: 11.0.5
       unist-util-visit: 5.1.0
 
+  rehype-callouts@2.2.0:
+    dependencies:
+      '@types/hast': 3.0.4
+      hast-util-from-html: 2.0.3
+      hast-util-is-element: 3.0.0
+      hastscript: 9.0.1
+      unist-util-visit: 5.1.0
+
   rehype-raw@7.0.0:
     dependencies:
       '@types/hast': 3.0.4
@@ -5109,6 +5131,10 @@ snapshots:
       '@types/hast': 3.0.4
       hast-util-to-html: 9.0.5
       unified: 11.0.5
+
+  remark-admonition-to-blockquote-callout@1.0.0:
+    dependencies:
+      '@types/mdast': 4.0.4
 
   remark-gfm@4.0.1:
     dependencies:

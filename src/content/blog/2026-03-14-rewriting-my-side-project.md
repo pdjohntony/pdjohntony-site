@@ -26,6 +26,7 @@ A brief archaeology of the repo:
 
 The honest version: `cargo` is a joy, the binary deploys as one file, and I stopped thinking about runtime errors entirely. What it didn't fix is that I still don't know what the settings page should look like.
 
+!!! note
 If you're rewriting to learn the language, say that out loud and enjoy it. The trouble starts when you tell yourself it's for performance.
 
 The core loading code ended up shorter than the typescript version, which surprised me:
