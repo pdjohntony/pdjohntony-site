@@ -2,8 +2,11 @@
 import HeaderLink from './header-link.astro'
 ---
 
-<header>
-  <nav class="flex items-baseline gap-6.5 pb-14 text-[15px] font-medium">
+<header
+  data-site-header
+  class="sticky top-0 z-40 -mx-6 -mt-4 mb-10 px-6 transition-transform duration-300 ease-out before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:-bottom-8 before:-z-10 before:bg-bg before:opacity-0 before:transition-opacity before:duration-300 before:[mask-image:linear-gradient(to_bottom,black_55%,transparent)] motion-reduce:transition-none sm:-mx-12 sm:px-12 data-[hidden]:-translate-y-full data-[stuck]:before:opacity-100"
+>
+  <nav class="flex items-baseline gap-6.5 py-4 text-[15px] font-medium">
     <a href="/" class="mr-auto text-base font-extrabold text-accent transition-colors hover:text-accent-hover">
       ~/phill-johntony
     </a>
@@ -25,3 +28,37 @@ import HeaderLink from './header-link.astro'
     </button>
   </nav>
 </header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-site-header]')
+
+  if (header) {
+    const PAGE_TOP = 0
+    // Ignore trackpad jitter: the bar only reveals after this much upward travel
+    const REVEAL_TRAVEL_PX = 16
+    const NO_TRAVEL = 0
+    let lastScrollY = globalThis.scrollY
+    let upwardTravel = NO_TRAVEL
+
+    const update = () => {
+      const { scrollY } = globalThis
+      const stuck = header.getBoundingClientRect().top <= PAGE_TOP
+      header.toggleAttribute('data-stuck', stuck && scrollY > PAGE_TOP)
+
+      if (scrollY > lastScrollY && stuck) {
+        upwardTravel = NO_TRAVEL
+        header.dataset.hidden = ''
+      } else if (scrollY < lastScrollY) {
+        upwardTravel += lastScrollY - scrollY
+        if (upwardTravel >= REVEAL_TRAVEL_PX || !stuck) {
+          delete header.dataset.hidden
+        }
+      }
+      lastScrollY = scrollY
+    }
+
+    globalThis.addEventListener('scroll', update, { passive: true })
+    // Keep keyboard-tabbed nav links visible even after a scroll hid the bar
+    header.addEventListener('focusin', () => delete header.dataset.hidden)
+  }
+</script>
