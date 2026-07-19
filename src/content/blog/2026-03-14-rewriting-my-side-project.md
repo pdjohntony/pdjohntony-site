@@ -2,6 +2,7 @@
 title: 'Rewriting my side project for the third time'
 description: "This time it's different. This time it's in Rust. (It is not different.)"
 pubDate: 2026-03-14 08:00:00 -0500
+heroImage: '../../assets/site-default.jpg'
 tags: ['dev']
 ---
 
