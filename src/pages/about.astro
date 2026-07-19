@@ -1,31 +1,37 @@
 ---
 import { Image } from 'astro:assets'
-import AboutPhoto from '../assets/site-default.jpg'
+import AboutPhoto from '../assets/phill-johntony.webp'
 import { SITE_DESCRIPTION } from '../consts'
 import BaseLayout from '../layouts/base-layout.astro'
 ---
 
 <BaseLayout title="about" description={SITE_DESCRIPTION}>
-  <div class="max-w-130">
+  <div class="max-w-3xl">
     <div class="[view-transition-name:page-intro]">
       <h1 class="mt-4 mb-7 text-[32px] font-extrabold tracking-[-0.02em]">about</h1>
     </div>
     <div class="[view-transition-name:page-body]">
-      <Image src={AboutPhoto} width={320} height={320} class="size-40 rounded-xl object-cover" alt="Phill Johntony" />
-      <div class="mt-7 flex flex-col gap-5 text-[17px] leading-[1.65] text-muted">
+      <Image
+        src={AboutPhoto}
+        width={320}
+        height={320}
+        class="size-40 rounded-full object-cover sm:float-left sm:mr-6 sm:mb-2"
+        alt="Phill Johntony"
+      />
+      <div class="mt-7 space-y-5 text-[17px] leading-[1.65] text-muted sm:mt-0">
         <p>
-          i'm phill. i live in ohio and write software for a living — mostly backend, mostly the unglamorous parts that
-          keep things running.
+          i'm phill johntony. i live in ohio and consult for large enterprises and solve problems by writing software.
+          i started creating websites back in 2002 with php before ajax was a thing.
+          these days i enjoy using python 🐍 and vue, but i also dabble in go and rust.
         </p>
         <p>
-          outside of work it's side projects (see <a
+          outside of work it's side <a
             href="/projects"
             class="text-accent transition-colors hover:text-accent-hover">projects</a
-          >), too many keyboards, and saving up for the next trip. this site is where the notes end up.
+          >, gaming, walking the dog, and making homemade pizza 🍕.
         </p>
         <p>
-          the best way to reach me is <span class="text-text">hi@philljohntony.com</span>, or find me on github and
-          bluesky below.
+          the best way to reach me is through my socials below.
         </p>
       </div>
     </div>
