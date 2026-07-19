@@ -1,11 +1,11 @@
 import rss from '@astrojs/rss'
 import type { APIRoute } from 'astro'
-import { getCollection } from 'astro:content'
 
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts'
+import { getSortedPosts } from '../lib/posts'
 
 export const GET: APIRoute = async ({ site }) => {
-  const posts = await getCollection('blog')
+  const posts = await getSortedPosts()
   const items = []
 
   for (const { data, id } of posts) {
