@@ -9,7 +9,8 @@
 ## Commands
 
 - Install: `pnpm install`
-- Develop: `pnpm dev`
+- Develop: `pnpm dev -- --background`. Use Astro's managed background server instead of launching a long-running foreground process; the command waits until the server is ready and reuses an existing instance rather than starting a duplicate.
+- Dev server controls: `pnpm exec astro dev status`, `pnpm exec astro dev logs`, and `pnpm exec astro dev stop`. Use `http://localhost:4321/_astro/status` for a readiness/health check, and stop the server when it is no longer needed.
 - Format/write or check: `pnpm fmt` / `pnpm fmt:check`
 - Lint or autofix: `pnpm lint` / `pnpm lint:fix`
 - TypeScript only: `pnpm typecheck`
