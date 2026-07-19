@@ -14,11 +14,25 @@ const posts = sortedPosts.slice(HOME_LIST_START, HOME_POST_COUNT)
   <div class="[view-transition-name:page-intro]">
     <h1 class="mt-4 mb-5 text-[44px] leading-[1.1] font-extrabold tracking-[-0.03em]">
       hey, i'm phill.<br />
-      <span class="text-muted">i build things and write about it.</span>
+      <span id="tagline" class="text-muted">the man with three first names.</span>
     </h1>
-    <p class="mb-11 max-w-120 text-[17px] leading-[1.65] text-muted">
-      engineer in ohio. mostly backend stuff by day, half-finished side projects by night. sometimes i leave the country
-      and write that up too.
+    <script is:inline>
+      {
+        const taglines = [
+          'the man with three first names.',
+          'yes, those are all first names.',
+          'building software to 80% since 2005.',
+          'pro at googling error messages.',
+          'slowly automating myself out of a job',
+          '99 problems and they\'re all DNS.',
+          'the law firm (not really). <span class="text-[0.5rem] font-normal tracking-normal italic">get it? phill. john. tony... nevermind...</span>',
+        ]
+        document.querySelector('#tagline').innerHTML =
+          taglines[Math.floor(Math.random() * taglines.length)]
+      }
+    </script>
+    <p class="mb-11 max-w-140 text-[17px] leading-[1.65] text-muted">
+      developer. problem solver. pizza maker. ohioan.
     </p>
   </div>
   <section class="flex flex-col [view-transition-name:page-body]">
