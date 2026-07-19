@@ -22,7 +22,10 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
     class="reading-progress fixed top-0 left-0 z-50 h-0.5 w-full origin-left bg-accent"
     aria-hidden="true"
   ></div>
-  <article class="mt-4 min-[1280px]:grid min-[1280px]:w-[1010px] min-[1280px]:grid-cols-[768px_210px] min-[1280px]:gap-x-8">
+  <article
+    data-lightbox-gallery
+    class="mt-4 [&_img]:cursor-zoom-in [&_img:focus-visible]:outline-2 [&_img:focus-visible]:outline-offset-4 [&_img:focus-visible]:outline-accent min-[1280px]:grid min-[1280px]:w-[1010px] min-[1280px]:grid-cols-[768px_210px] min-[1280px]:gap-x-8"
+  >
     {
       tableOfContents.length > 0 && (
         <nav
@@ -74,7 +77,91 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
       <slot />
     </div>
   </article>
+  <dialog
+    data-lightbox
+    aria-label="Image preview"
+    class="m-auto h-dvh max-h-none w-screen max-w-none overflow-hidden bg-transparent p-6 text-text backdrop:bg-bg/95 backdrop:backdrop-blur-sm open:flex open:items-center open:justify-center sm:p-12"
+  >
+    <form method="dialog">
+      <button
+        class="absolute top-5 right-6 z-10 -m-2 p-2 text-[13px] font-medium text-muted lowercase transition-colors hover:text-accent-hover focus-visible:text-accent-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:top-7 sm:right-8"
+        type="submit"
+      >
+        close
+      </button>
+    </form>
+    <figure class="pointer-events-none flex max-h-full max-w-full flex-col items-center gap-3">
+      <img data-lightbox-image class="max-h-[calc(100dvh-7rem)] max-w-full rounded-[10px] object-contain" alt="" />
+      <figcaption data-lightbox-caption class="max-w-[60ch] text-center text-[13px] text-faint"></figcaption>
+    </figure>
+  </dialog>
 </BaseLayout>
+
+<script>
+  const initializeImage = (image: HTMLImageElement, openImage: (image: HTMLImageElement) => void) => {
+    let label = 'View image full size'
+    if (image.alt) {
+      label = `View ${image.alt} full size`
+    }
+
+    image.tabIndex = 0
+    image.setAttribute('role', 'button')
+    image.setAttribute('aria-label', label)
+
+    image.addEventListener('click', (event) => {
+      event.preventDefault()
+      openImage(image)
+    })
+    image.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') {
+        return
+      }
+
+      event.preventDefault()
+      openImage(image)
+    })
+  }
+
+  const initializeDialog = (dialog: HTMLDialogElement, preview: HTMLImageElement) => {
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) {
+        dialog.close()
+      }
+    })
+    dialog.addEventListener('close', () => {
+      document.documentElement.style.removeProperty('overflow')
+      preview.removeAttribute('src')
+    })
+  }
+
+  const setupLightbox = () => {
+    const gallery = document.querySelector<HTMLElement>('[data-lightbox-gallery]')
+    const dialog = document.querySelector<HTMLDialogElement>('[data-lightbox]')
+    const preview = dialog?.querySelector<HTMLImageElement>('[data-lightbox-image]')
+    const caption = dialog?.querySelector<HTMLElement>('[data-lightbox-caption]')
+
+    if (!gallery || !dialog || !preview || !caption || dialog.dataset.ready) {
+      return
+    }
+
+    dialog.dataset.ready = 'true'
+
+    const openImage = (image: HTMLImageElement) => {
+      preview.src = image.currentSrc || image.src
+      preview.alt = image.alt
+      caption.textContent = image.alt
+      caption.hidden = !image.alt
+      document.documentElement.style.overflow = 'hidden'
+      dialog.showModal()
+    }
+
+    gallery.querySelectorAll<HTMLImageElement>('img').forEach((image) => initializeImage(image, openImage))
+    initializeDialog(dialog, preview)
+  }
+
+  setupLightbox()
+  document.addEventListener('astro:page-load', setupLightbox)
+</script>
 
 <style>
   @keyframes reading-progress {
@@ -91,10 +178,59 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
     scroll-target-group: auto;
   }
 
+  [data-lightbox] {
+    opacity: 0;
+    transform: translateY(8px) scale(0.985);
+    transition:
+      opacity 220ms ease,
+      transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      display 220ms allow-discrete,
+      overlay 220ms allow-discrete;
+  }
+
+  [data-lightbox][open] {
+    opacity: 1;
+    transform: none;
+  }
+
+  [data-lightbox]::backdrop {
+    opacity: 0;
+    transition:
+      opacity 220ms ease,
+      display 220ms allow-discrete,
+      overlay 220ms allow-discrete;
+  }
+
+  [data-lightbox][open]::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    [data-lightbox][open] {
+      opacity: 0;
+      transform: translateY(8px) scale(0.985);
+    }
+
+    [data-lightbox][open]::backdrop {
+      opacity: 0;
+    }
+  }
+
   @supports (animation-timeline: scroll()) {
     .reading-progress {
       animation: reading-progress auto linear both;
       animation-timeline: scroll(root block);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-lightbox],
+    [data-lightbox]::backdrop {
+      transition: none;
+    }
+
+    [data-lightbox] {
+      transform: none;
     }
   }
 </style>
