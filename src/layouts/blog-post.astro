@@ -1,4 +1,5 @@
 ---
+import type { MarkdownHeading } from 'astro'
 import type { CollectionEntry } from 'astro:content'
 import { Image } from 'astro:assets'
 import FormattedDate from '../components/formatted-date.astro'
@@ -7,9 +8,13 @@ import BaseLayout from './base-layout.astro'
 type Props = CollectionEntry<'blog'>['data'] & {
   postId: string
   minutesRead?: number
+  headings?: MarkdownHeading[]
 }
 
-const { postId, title, description, pubDate, updatedDate, heroImage, tags, minutesRead } = Astro.props
+const { postId, title, description, pubDate, updatedDate, heroImage, tags, minutesRead, headings = [] } = Astro.props
+const HEADING_LEVEL_TWO = 2
+const HEADING_LEVEL_THREE = 3
+const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_TWO || depth === HEADING_LEVEL_THREE)
 ---
 
 <BaseLayout title={title} description={description} image={heroImage}>
@@ -17,10 +22,35 @@ const { postId, title, description, pubDate, updatedDate, heroImage, tags, minut
     class="reading-progress fixed top-0 left-0 z-50 h-0.5 w-full origin-left bg-accent"
     aria-hidden="true"
   ></div>
-  <article>
+  <article class="mt-4 min-[1180px]:grid min-[1180px]:w-[922px] min-[1180px]:grid-cols-[680px_210px] min-[1180px]:gap-x-8">
+    {
+      tableOfContents.length > 0 && (
+        <nav
+          aria-label="Table of contents"
+          class="sticky top-6 col-start-2 row-span-2 row-start-1 hidden max-h-[calc(100vh-1.5rem)] w-[210px] flex-col self-start overflow-y-auto min-[1180px]:flex"
+        >
+          <p class="mb-2 text-[13px] font-bold text-muted lowercase">on this page</p>
+          <ol class="toc-links flex flex-col gap-0.5">
+            {tableOfContents.map(({ depth, slug, text }) => (
+              <li>
+                <a
+                  href={`#${slug}`}
+                  class:list={[
+                    'block py-1.25 text-[13px] leading-[1.4] text-faint transition-colors hover:text-accent-hover',
+                    depth === HEADING_LEVEL_THREE && 'pl-3.5',
+                  ]}
+                >
+                  {text}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
     <header class="[view-transition-name:page-intro]">
       <h1
-        class="mt-4 mb-4 text-4xl leading-[1.15] font-extrabold tracking-[-0.02em]"
+        class="mt-0 mb-4 text-4xl leading-[1.15] font-extrabold tracking-[-0.02em]"
         style={`view-transition-name: post-${postId}`}
       >
         {title}
@@ -57,10 +87,20 @@ const { postId, title, description, pubDate, updatedDate, heroImage, tags, minut
     transform: scaleX(0);
   }
 
+  .toc-links {
+    scroll-target-group: auto;
+  }
+
   @supports (animation-timeline: scroll()) {
     .reading-progress {
       animation: reading-progress auto linear both;
       animation-timeline: scroll(root block);
     }
+  }
+</style>
+
+<style is:inline>
+  .toc-links a:target-current {
+    color: var(--color-accent);
   }
 </style>

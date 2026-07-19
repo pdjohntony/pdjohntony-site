@@ -12,7 +12,7 @@ export const getStaticPaths = async () => {
 type Props = CollectionEntry<'blog'>
 
 const post = Astro.props
-const { Content } = await render(post)
+const { Content, headings } = await render(post)
 
 const WORDS_PER_MINUTE = 200
 const EMPTY_WORD_COUNT = 0
@@ -21,6 +21,6 @@ const wordCount = post.body?.split(/\s+/gu).length ?? EMPTY_WORD_COUNT
 const minutesRead = Math.max(MINIMUM_MINUTES, Math.round(wordCount / WORDS_PER_MINUTE))
 ---
 
-<BlogPost {...post.data} postId={post.id} minutesRead={minutesRead}>
+<BlogPost {...post.data} postId={post.id} minutesRead={minutesRead} headings={headings}>
   <Content />
 </BlogPost>
