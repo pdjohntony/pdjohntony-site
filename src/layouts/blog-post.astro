@@ -14,12 +14,10 @@ const { postId, title, description, pubDate, updatedDate, heroImage, tags, minut
 
 <BaseLayout title={title} description={description} image={heroImage}>
   <div
-    data-reading-progress
-    class="fixed top-0 left-0 z-50 h-0.5 w-full origin-left bg-accent will-change-transform"
-    style="transform: scaleX(0)"
+    class="reading-progress fixed top-0 left-0 z-50 h-0.5 w-full origin-left bg-accent"
     aria-hidden="true"
   ></div>
-  <article data-blog-post>
+  <article>
     <header class="[view-transition-name:page-intro]">
       <h1
         class="mt-4 mb-4 text-4xl leading-[1.15] font-extrabold tracking-[-0.02em]"
@@ -48,36 +46,21 @@ const { postId, title, description, pubDate, updatedDate, heroImage, tags, minut
   </article>
 </BaseLayout>
 
-<script>
-  const progressBar = document.querySelector<HTMLElement>('[data-reading-progress]')
-  const article = document.querySelector<HTMLElement>('[data-blog-post]')
-
-  if (progressBar && article) {
-    const MIN_PROGRESS = 0
-    const MAX_PROGRESS = 1
-    const IDLE_FRAME = 0
-    let frame = IDLE_FRAME
-
-    const updateProgress = () => {
-      const articleEnd = article.offsetTop + article.offsetHeight - globalThis.innerHeight
-      let progress = MAX_PROGRESS
-
-      if (articleEnd > MIN_PROGRESS) {
-        progress = Math.max(MIN_PROGRESS, Math.min(globalThis.scrollY / articleEnd, MAX_PROGRESS))
-      }
-
-      progressBar.style.transform = `scaleX(${progress})`
-      frame = IDLE_FRAME
+<style>
+  @keyframes reading-progress {
+    to {
+      transform: scaleX(1);
     }
-
-    const requestUpdate = () => {
-      if (frame === IDLE_FRAME) {
-        frame = globalThis.requestAnimationFrame(updateProgress)
-      }
-    }
-
-    updateProgress()
-    globalThis.addEventListener('scroll', requestUpdate, { passive: true })
-    globalThis.addEventListener('resize', requestUpdate)
   }
-</script>
+
+  .reading-progress {
+    transform: scaleX(0);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .reading-progress {
+      animation: reading-progress auto linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+</style>
