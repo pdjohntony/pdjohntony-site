@@ -4,28 +4,62 @@ import HeaderLink from './header-link.astro'
 
 <header
   data-site-header
-  class="sticky top-0 z-40 -mx-6 -mt-4 mb-10 px-6 transition-transform duration-300 ease-out before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:-bottom-8 before:-z-10 before:bg-bg before:opacity-0 before:transition-opacity before:duration-300 before:[mask-image:linear-gradient(to_bottom,black_55%,transparent)] motion-reduce:transition-none sm:-mx-12 sm:px-12 data-[hidden]:-translate-y-full data-[stuck]:before:opacity-100"
+  class="sticky top-0 z-40 -mx-6 -mt-4 mb-10 bg-bg px-6 transition-transform duration-300 ease-out before:pointer-events-none before:absolute before:inset-x-0 before:top-auto before:-bottom-8 before:-z-10 before:h-8 before:bg-bg before:opacity-0 before:transition-opacity before:duration-300 before:[mask-image:linear-gradient(to_bottom,black,transparent)] motion-reduce:transition-none sm:-mx-12 sm:px-12 data-[hidden]:-translate-y-full data-[stuck]:before:opacity-100"
 >
-  <nav class="flex items-baseline gap-6.5 py-4 text-[15px] font-medium">
-    <a href="/" class="mr-auto text-base font-extrabold text-accent transition-colors hover:text-accent-hover">
+  <nav class="grid grid-cols-[minmax(0,1fr)_auto] items-center py-4 text-[15px] font-medium sm:flex sm:gap-6.5">
+    <a href="/" class="mr-auto whitespace-nowrap text-base font-extrabold text-accent transition-colors hover:text-accent-hover">
       ~/phill-johntony
     </a>
-    <HeaderLink href="/blog">blog</HeaderLink>
-    <HeaderLink href="/projects">projects</HeaderLink>
-    <HeaderLink href="/about">about</HeaderLink>
     <button
       type="button"
-      data-palette-trigger
-      title="command palette"
-      class="flex cursor-pointer flex-row-reverse items-center gap-2 rounded-lg bg-surface px-2.5 py-1.5 text-[13px] text-faint transition-colors hover:text-accent-hover"
+      data-menu-toggle
+      aria-controls="site-menu"
+      aria-expanded="false"
+      class="group relative size-8 cursor-pointer text-muted transition-colors hover:text-accent-hover sm:hidden"
     >
-      <span data-palette-kbd class="hidden sm:inline">⌘K</span>
-      <span class="sr-only">search</span>
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-        <circle cx="11" cy="11" r="7"></circle>
-        <path d="m21 21-4.3-4.3"></path>
-      </svg>
+      <span class="sr-only">toggle navigation</span>
+      <span
+        class="absolute left-1.5 top-[11px] h-0.5 w-5 bg-current transition-transform duration-300 ease-out group-aria-expanded:translate-y-[4px] group-aria-expanded:rotate-45 motion-reduce:transition-none"
+      ></span>
+      <span
+        class="absolute left-1.5 top-[19px] h-0.5 w-5 bg-current transition-transform duration-300 ease-out group-aria-expanded:-translate-y-[4px] group-aria-expanded:-rotate-45 motion-reduce:transition-none"
+      ></span>
     </button>
+    <div
+      id="site-menu"
+      data-site-menu
+      class="invisible col-span-2 grid grid-rows-[0fr] delay-300 transition-[grid-template-rows,visibility] duration-300 ease-out motion-reduce:transition-none sm:!visible sm:flex sm:items-center sm:gap-6.5 data-[open]:visible data-[open]:grid-rows-[1fr] data-[open]:delay-0"
+    >
+      <div class="overflow-hidden sm:contents">
+        <div class="flex flex-col pt-3 sm:contents">
+          <HeaderLink href="/blog" class="border-b border-border py-3 sm:border-0 sm:py-0">blog</HeaderLink>
+          <HeaderLink href="/projects" class="border-b border-border py-3 sm:border-0 sm:py-0">projects</HeaderLink>
+          <HeaderLink href="/about" class="border-b border-border py-3 sm:border-0 sm:py-0">about</HeaderLink>
+          <button
+            type="button"
+            data-palette-trigger
+            title="command palette"
+            class="flex min-h-8 cursor-pointer items-center gap-2 py-3 text-muted transition-colors hover:text-accent-hover sm:flex-row-reverse sm:rounded-lg sm:bg-surface sm:px-2.5 sm:py-1.5 sm:text-[13px] sm:text-faint"
+          >
+            <span data-palette-kbd class="hidden sm:inline">⌘K</span>
+            <span class="sm:sr-only">search</span>
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m21 21-4.3-4.3"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
   </nav>
 </header>
 
@@ -33,6 +67,8 @@ import HeaderLink from './header-link.astro'
   const header = document.querySelector<HTMLElement>('[data-site-header]')
 
   if (header) {
+    const menuToggle = header.querySelector<HTMLButtonElement>('[data-menu-toggle]')
+    const menu = header.querySelector<HTMLElement>('[data-site-menu]')
     const PAGE_TOP = 0
     // Ignore trackpad jitter: the bar only reveals after this much upward travel
     const REVEAL_TRAVEL_PX = 16
@@ -40,18 +76,29 @@ import HeaderLink from './header-link.astro'
     let lastScrollY = globalThis.scrollY
     let upwardTravel = NO_TRAVEL
 
+    const revealHeader = () => {
+      upwardTravel = NO_TRAVEL
+      delete header.dataset.hidden
+    }
+
+    const hideHeader = () => {
+      upwardTravel = NO_TRAVEL
+      header.dataset.hidden = ''
+    }
+
     const update = () => {
       const { scrollY } = globalThis
       const stuck = header.getBoundingClientRect().top <= PAGE_TOP
       header.toggleAttribute('data-stuck', stuck && scrollY > PAGE_TOP)
 
-      if (scrollY > lastScrollY && stuck) {
-        upwardTravel = NO_TRAVEL
-        header.dataset.hidden = ''
+      if (menuToggle?.getAttribute('aria-expanded') === 'true') {
+        revealHeader()
+      } else if (scrollY > lastScrollY && stuck) {
+        hideHeader()
       } else if (scrollY < lastScrollY) {
         upwardTravel += lastScrollY - scrollY
         if (upwardTravel >= REVEAL_TRAVEL_PX || !stuck) {
-          delete header.dataset.hidden
+          revealHeader()
         }
       }
       lastScrollY = scrollY
@@ -60,5 +107,24 @@ import HeaderLink from './header-link.astro'
     globalThis.addEventListener('scroll', update, { passive: true })
     // Keep keyboard-tabbed nav links visible even after a scroll hid the bar
     header.addEventListener('focusin', () => delete header.dataset.hidden)
+
+    if (menuToggle && menu) {
+      const setMenuOpen = (open: boolean) => {
+        menuToggle.setAttribute('aria-expanded', String(open))
+        menu.toggleAttribute('data-open', open)
+        if (open) {
+          revealHeader()
+        }
+      }
+
+      menuToggle.addEventListener('click', () => setMenuOpen(menuToggle.getAttribute('aria-expanded') !== 'true'))
+      menu.querySelector('[data-palette-trigger]')?.addEventListener('click', () => setMenuOpen(false))
+      header.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') {
+          setMenuOpen(false)
+          menuToggle.focus()
+        }
+      })
+    }
   }
 </script>
