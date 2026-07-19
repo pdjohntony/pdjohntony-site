@@ -73,7 +73,7 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
       </div>
       {heroImage && <Image width={1160} height={580} src={heroImage} class="mb-10 w-full rounded-[10px]" alt="" />}
     </header>
-    <div class="prose max-w-none [view-transition-name:page-body]">
+    <div class="prose max-w-none [view-transition-name:page-body] min-[1280px]:col-start-1">
       <slot />
     </div>
   </article>
