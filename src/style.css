@@ -1,10 +1,12 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/manrope';
 @plugin '@tailwindcss/typography';
 @config '../tailwind.config.js';
 
+@theme inline {
+  --font-sans: var(--font-manrope);
+}
+
 @theme {
-  --font-sans: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
   --color-bg: #0a0a0c;
   --color-surface: #121216;
   --color-surface-hover: #17171d;
