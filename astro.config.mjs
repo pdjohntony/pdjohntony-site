@@ -10,6 +10,7 @@ import rehypeCallouts from 'rehype-callouts'
 import remarkAdmonitionToBlockquoteCallout from 'remark-admonition-to-blockquote-callout'
 
 import { rehypeTitlelessCallouts, remarkTitlelessCallouts } from './src/lib/markdown-callouts.ts'
+import { codeBlockTransformer } from './src/lib/shiki-code-block.ts'
 
 // https://astro.build/config
 export default defineConfig({
@@ -45,6 +46,9 @@ export default defineConfig({
       ],
       remarkPlugins: [remarkTitlelessCallouts, remarkAdmonitionToBlockquoteCallout],
     }),
+    shikiConfig: {
+      transformers: [codeBlockTransformer],
+    },
   },
   site: 'https://philljohntony.com',
   vite: {
