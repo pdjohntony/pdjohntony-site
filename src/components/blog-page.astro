@@ -3,6 +3,7 @@ import { SITE_DESCRIPTION } from '../consts'
 import BaseLayout from '../layouts/base-layout.astro'
 import { type BlogPageData, FIRST_PAGE, PAGE_STEP } from '../lib/posts'
 import BlogListItem from './blog-list-item.astro'
+import TagFilter from './tag-filter.astro'
 
 export type Props = BlogPageData
 
@@ -21,13 +22,7 @@ const olderHref = `/blog/${currentPage + PAGE_STEP}`
   <div class="mt-4 mb-5 flex flex-wrap items-baseline justify-between gap-4 [view-transition-name:page-intro]">
     <h1 class="text-[32px] font-extrabold tracking-[-0.02em]">blog</h1>
     <div class="flex flex-wrap items-baseline justify-end gap-4 text-[13px]">
-      {
-        tags.map((tag) => (
-          <a href={`/tags/${tag}/`} class="text-faint transition-colors hover:text-accent-hover">
-            {tag}
-          </a>
-        ))
-      }
+      <TagFilter tags={tags} />
       <a href="/rss.xml" class="text-faint transition-colors hover:text-accent-hover">rss</a>
     </div>
   </div>

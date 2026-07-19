@@ -1,5 +1,6 @@
 ---
 import BlogListItem from '../../components/blog-list-item.astro'
+import TagFilter from '../../components/tag-filter.astro'
 import BaseLayout from '../../layouts/base-layout.astro'
 import { getSortedPosts } from '../../lib/posts'
 
@@ -12,25 +13,22 @@ export const getStaticPaths = async () => {
     const filteredPosts = allPosts.filter((post) => post.data.tags?.includes(tag))
     return {
       params: { tag },
-      props: { posts: filteredPosts },
+      props: { posts: filteredPosts, tags: uniqueTags.toSorted() },
     }
   })
 }
 
 const { tag } = Astro.params
-const { posts } = Astro.props
-
-const SINGLE_POST = 1
-let countLabel = `${posts.length} posts`
-if (posts.length === SINGLE_POST) {
-  countLabel = '1 post'
-}
+const { posts, tags } = Astro.props
 ---
 
 <BaseLayout title={tag} description={`Posts tagged with ${tag}`}>
-  <div class="mt-4 mb-5 flex items-baseline justify-between gap-4 [view-transition-name:page-intro]">
-    <h1 class="text-[32px] font-extrabold tracking-[-0.02em] lowercase">{tag}</h1>
-    <span class="text-[13px] text-faint">{countLabel}</span>
+  <div class="mt-4 mb-5 flex flex-wrap items-baseline justify-between gap-4 [view-transition-name:page-intro]">
+    <h1 class="text-[32px] font-extrabold tracking-[-0.02em]">blog</h1>
+    <div class="flex flex-wrap items-baseline justify-end gap-4 text-[13px]">
+      <TagFilter tags={tags} activeTag={tag} />
+      <a href="/rss.xml" class="text-faint transition-colors hover:text-accent-hover">rss</a>
+    </div>
   </div>
   <div class="flex flex-col [view-transition-name:page-body]">
     {posts.map((post) => <BlogListItem post={post} />)}

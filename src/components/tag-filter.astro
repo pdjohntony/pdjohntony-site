@@ -1,0 +1,35 @@
+---
+interface Props {
+  activeTag?: string
+  tags: string[]
+}
+
+const { activeTag, tags } = Astro.props
+const activeLabel = activeTag ?? 'tags'
+const inactiveClass = 'text-faint transition-colors hover:text-accent-hover'
+const activeClass = 'text-accent transition-colors hover:text-accent-hover'
+---
+
+<details class="group flex flex-row-reverse flex-wrap items-baseline justify-start gap-4">
+  <summary
+    class:list={[
+      'cursor-pointer list-none px-1.5 py-2 -m-1.5 transition-colors hover:text-accent-hover [&::-webkit-details-marker]:hidden',
+      activeTag ? 'text-accent' : 'text-faint',
+    ]}
+  >
+    <span aria-hidden="true" class="group-open:hidden">{activeLabel}</span>
+    <span class="sr-only group-open:hidden">open tag filters</span>
+    <span aria-hidden="true" class="hidden group-open:inline">×</span>
+    <span class="sr-only hidden group-open:inline">close tag filters</span>
+  </summary>
+  <div class="hidden flex-wrap items-baseline gap-4 group-open:flex">
+    <a href="/blog" class={activeTag ? inactiveClass : activeClass}>all</a>
+    {
+      tags.map((tag) => (
+        <a href={`/tags/${tag}/`} class={tag === activeTag ? activeClass : inactiveClass}>
+          {tag}
+        </a>
+      ))
+    }
+  </div>
+</details>
