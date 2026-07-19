@@ -73,6 +73,25 @@ export default {
               fontSize: '19px',
               fontWeight: '700',
             },
+            'h2, h3': {
+              position: 'relative',
+            },
+            '.heading-anchor': {
+              position: 'absolute',
+              insetInlineEnd: '100%',
+              paddingInlineEnd: '0.5rem',
+              color: 'var(--color-faint)',
+              opacity: '0',
+              transition: 'color 160ms ease, opacity 160ms ease',
+            },
+            'h2:hover .heading-anchor, h3:hover .heading-anchor, .heading-anchor:focus-visible': {
+              opacity: '1',
+            },
+            '.heading-anchor:focus-visible': {
+              color: 'var(--color-accent-hover)',
+              outline: '2px solid var(--color-accent)',
+              outlineOffset: '2px',
+            },
             hr: {
               marginTop: '2.25rem',
               marginBottom: '2.25rem',
