@@ -22,12 +22,12 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
     class="reading-progress fixed top-0 left-0 z-50 h-0.5 w-full origin-left bg-accent"
     aria-hidden="true"
   ></div>
-  <article class="mt-4 min-[1180px]:grid min-[1180px]:w-[922px] min-[1180px]:grid-cols-[680px_210px] min-[1180px]:gap-x-8">
+  <article class="mt-4 min-[1280px]:grid min-[1280px]:w-[1010px] min-[1280px]:grid-cols-[768px_210px] min-[1280px]:gap-x-8">
     {
       tableOfContents.length > 0 && (
         <nav
           aria-label="Table of contents"
-          class="sticky top-6 col-start-2 row-span-2 row-start-1 hidden max-h-[calc(100vh-1.5rem)] w-[210px] flex-col self-start overflow-y-auto min-[1180px]:flex"
+          class="sticky top-6 col-start-2 row-span-2 row-start-1 hidden max-h-[calc(100vh-1.5rem)] w-[210px] flex-col self-start overflow-y-auto min-[1280px]:flex"
         >
           <p class="mb-2 text-[13px] font-bold text-muted lowercase">on this page</p>
           <ol class="toc-links flex flex-col gap-0.5">

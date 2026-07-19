@@ -49,7 +49,7 @@ Casing: the site's chrome is lowercase (nav, section labels, hero, footer, proje
 
 ## Layout
 
-- Single column, `max-w-[680px]`, centered. `48px` horizontal padding (`px-12`, dropping to `px-6` on small screens).
+- Single column, `max-w-[768px]`, centered. `48px` horizontal padding (`px-12`, dropping to `px-6` on small screens).
 - Vertical rhythm is generous: ~72px between hero and content, ~56px below nav.
 - Lists separate with `1px` `border-border` hairlines, not boxes. Cards (projects only) get `bg-surface` + `14px` radius — no border. Borders in this design are hairline _dividers_ only, never boxes around things.
 - Flex/grid with `gap` for all sibling groups.
@@ -66,7 +66,7 @@ Level: subtle. Nothing longer than 400ms, nothing that moves more than 12px.
 ## Interactive details — not implemented yet
 
 - **⌘K palette:** ctrl/cmd+K anywhere, or the small `⌘K` chip in the footer. Searches pages + posts; ↑↓/↵/esc. Surface panel on a dimmed blurred backdrop.
-- **Reading aids (post page):** 2px accent progress bar at viewport top; fixed right-margin TOC with scrollspy (hidden < 1180px); hover-revealed `#` anchor on every heading; "copy" action in code-block headers ("copied" for 1.5s).
+- **Reading aids (post page):** 2px accent progress bar at viewport top; sticky right-margin TOC with native CSS scrollspy (hidden < 1280px); hover-revealed `#` anchor on every heading; "copy" action in code-block headers ("copied" for 1.5s).
 - **Lightbox:** clicking a filled post image opens it full-size on a dimmed backdrop (esc or click to close).
 - **Text selection** highlights in accent with white text. _(Implemented.)_
 - Small controls keep 13px type but get ≥30px invisible hit areas (padding pulled back with negative margins).
@@ -87,7 +87,7 @@ Level: subtle. Nothing longer than 400ms, nothing that moves more than 12px.
 - **Callouts — not implemented yet:** `bg-surface` rounded box with an uppercase accent label (note / heads up). No border, no icon. Use a blockquote in the meantime.
 - **Tables:** hairline row dividers only, uppercase faint headers, key values in `text-text` 700.
 - **Images:** full-column, rounded, 13px faint centered captions.
-- **TOC — not implemented yet:** fixed right of the column (hidden < 1180px), uppercase faint label, 13px items (h3s indented), active section in accent via scrollspy; 2px accent reading-progress bar at viewport top.
+- **TOC:** sticky right of the column (hidden < 1280px), bold muted label, 13px items (h3s indented), active section in accent via native CSS scrollspy; 2px accent reading-progress bar at viewport top.
 
 ## Don'ts
 
