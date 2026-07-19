@@ -7,23 +7,27 @@ import BaseLayout from '../layouts/base-layout.astro'
 
 <BaseLayout title="about" description={SITE_DESCRIPTION}>
   <div class="max-w-130">
-    <h1 class="mt-4 mb-7 text-[32px] font-extrabold tracking-[-0.02em]">about</h1>
-    <Image src={AboutPhoto} width={320} height={320} class="size-40 rounded-xl object-cover" alt="Phill Johntony" />
-    <div class="mt-7 flex flex-col gap-5 text-[17px] leading-[1.65] text-muted">
-      <p>
-        i'm phill. i live in ohio and write software for a living — mostly backend, mostly the unglamorous parts that
-        keep things running.
-      </p>
-      <p>
-        outside of work it's side projects (see <a
-          href="/projects"
-          class="text-accent transition-colors hover:text-accent-hover">projects</a
-        >), too many keyboards, and saving up for the next trip. this site is where the notes end up.
-      </p>
-      <p>
-        the best way to reach me is <span class="text-text">hi@philljohntony.com</span>, or find me on github and
-        bluesky below.
-      </p>
+    <div class="[view-transition-name:page-intro]">
+      <h1 class="mt-4 mb-7 text-[32px] font-extrabold tracking-[-0.02em]">about</h1>
+    </div>
+    <div class="[view-transition-name:page-body]">
+      <Image src={AboutPhoto} width={320} height={320} class="size-40 rounded-xl object-cover" alt="Phill Johntony" />
+      <div class="mt-7 flex flex-col gap-5 text-[17px] leading-[1.65] text-muted">
+        <p>
+          i'm phill. i live in ohio and write software for a living — mostly backend, mostly the unglamorous parts that
+          keep things running.
+        </p>
+        <p>
+          outside of work it's side projects (see <a
+            href="/projects"
+            class="text-accent transition-colors hover:text-accent-hover">projects</a
+          >), too many keyboards, and saving up for the next trip. this site is where the notes end up.
+        </p>
+        <p>
+          the best way to reach me is <span class="text-text">hi@philljohntony.com</span>, or find me on github and
+          bluesky below.
+        </p>
+      </div>
     </div>
   </div>
 </BaseLayout>

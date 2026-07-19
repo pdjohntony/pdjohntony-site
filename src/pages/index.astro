@@ -11,15 +11,17 @@ const posts = sortedPosts.slice(HOME_LIST_START, HOME_POST_COUNT)
 ---
 
 <BaseLayout description={SITE_DESCRIPTION}>
-  <h1 class="mt-4 mb-5 text-[44px] leading-[1.1] font-extrabold tracking-[-0.03em]">
-    hey, i'm phill.<br />
-    <span class="text-muted">i build things and write about it.</span>
-  </h1>
-  <p class="mb-11 max-w-120 text-[17px] leading-[1.65] text-muted">
-    engineer in ohio. mostly backend stuff by day, half-finished side projects by night. sometimes i leave the country
-    and write that up too.
-  </p>
-  <section class="flex flex-col">
+  <div class="[view-transition-name:page-intro]">
+    <h1 class="mt-4 mb-5 text-[44px] leading-[1.1] font-extrabold tracking-[-0.03em]">
+      hey, i'm phill.<br />
+      <span class="text-muted">i build things and write about it.</span>
+    </h1>
+    <p class="mb-11 max-w-120 text-[17px] leading-[1.65] text-muted">
+      engineer in ohio. mostly backend stuff by day, half-finished side projects by night. sometimes i leave the country
+      and write that up too.
+    </p>
+  </div>
+  <section class="flex flex-col [view-transition-name:page-body]">
     {posts.map((post) => <BlogListItem post={post} />)}
     <div class="flex justify-end border-t border-border pt-5">
       <a href="/blog" class="flex items-center gap-1 text-sm text-accent transition-colors hover:text-accent-hover">

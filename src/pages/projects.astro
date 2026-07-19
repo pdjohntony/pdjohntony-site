@@ -30,8 +30,10 @@ const projects = [
 ---
 
 <BaseLayout title="projects" description="Things I build when I should be sleeping.">
-  <h1 class="mt-4 mb-9 text-[32px] font-extrabold tracking-[-0.02em]">projects</h1>
-  <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+  <div class="[view-transition-name:page-intro]">
+    <h1 class="mt-4 mb-9 text-[32px] font-extrabold tracking-[-0.02em]">projects</h1>
+  </div>
+  <div class="grid grid-cols-1 gap-5 [view-transition-name:page-body] sm:grid-cols-2">
     {
       projects.map((project) => (
         <a

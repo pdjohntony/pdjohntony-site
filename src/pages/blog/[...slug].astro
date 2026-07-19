@@ -21,6 +21,6 @@ const wordCount = post.body?.split(/\s+/gu).length ?? EMPTY_WORD_COUNT
 const minutesRead = Math.max(MINIMUM_MINUTES, Math.round(wordCount / WORDS_PER_MINUTE))
 ---
 
-<BlogPost {...post.data} minutesRead={minutesRead}>
+<BlogPost {...post.data} postId={post.id} minutesRead={minutesRead}>
   <Content />
 </BlogPost>

@@ -18,7 +18,7 @@ const olderHref = `/blog/${currentPage + PAGE_STEP}`
 ---
 
 <BaseLayout title="blog" description={SITE_DESCRIPTION}>
-  <div class="mt-4 mb-5 flex flex-wrap items-baseline justify-between gap-4">
+  <div class="mt-4 mb-5 flex flex-wrap items-baseline justify-between gap-4 [view-transition-name:page-intro]">
     <h1 class="text-[32px] font-extrabold tracking-[-0.02em]">blog</h1>
     <div class="flex flex-wrap items-baseline justify-end gap-4 text-[13px]">
       {
@@ -31,7 +31,7 @@ const olderHref = `/blog/${currentPage + PAGE_STEP}`
       <a href="/rss.xml" class="text-faint transition-colors hover:text-accent-hover">rss</a>
     </div>
   </div>
-  <div class="flex flex-col">
+  <div class="flex flex-col [view-transition-name:page-body]">
     {posts.map((post) => <BlogListItem post={post} />)}
     <div class="flex items-baseline justify-between border-t border-border pt-6 text-sm">
       {

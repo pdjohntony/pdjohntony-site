@@ -5,10 +5,11 @@ import FormattedDate from '../components/formatted-date.astro'
 import BaseLayout from './base-layout.astro'
 
 type Props = CollectionEntry<'blog'>['data'] & {
+  postId: string
   minutesRead?: number
 }
 
-const { title, description, pubDate, updatedDate, heroImage, tags, minutesRead } = Astro.props
+const { postId, title, description, pubDate, updatedDate, heroImage, tags, minutesRead } = Astro.props
 ---
 
 <BaseLayout title={title} description={description} image={heroImage}>
@@ -19,8 +20,13 @@ const { title, description, pubDate, updatedDate, heroImage, tags, minutesRead }
     aria-hidden="true"
   ></div>
   <article data-blog-post>
-    <header>
-      <h1 class="mt-4 mb-4 text-4xl leading-[1.15] font-extrabold tracking-[-0.02em]">{title}</h1>
+    <header class="[view-transition-name:page-intro]">
+      <h1
+        class="mt-4 mb-4 text-4xl leading-[1.15] font-extrabold tracking-[-0.02em]"
+        style={`view-transition-name: post-${postId}`}
+      >
+        {title}
+      </h1>
       <p class="mb-5 text-lg leading-[1.6] text-muted">{description}</p>
       <div class="flex items-baseline gap-4.5 pb-7 text-[13px] text-faint lowercase">
         <FormattedDate date={pubDate} />
@@ -36,7 +42,7 @@ const { title, description, pubDate, updatedDate, heroImage, tags, minutesRead }
       </div>
       {heroImage && <Image width={1160} height={580} src={heroImage} class="mb-10 w-full rounded-[10px]" alt="" />}
     </header>
-    <div class="prose max-w-none">
+    <div class="prose max-w-none [view-transition-name:page-body]">
       <slot />
     </div>
   </article>
