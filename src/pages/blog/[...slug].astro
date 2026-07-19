@@ -1,17 +1,26 @@
 ---
-import { type CollectionEntry, getCollection, render } from 'astro:content'
+import { type CollectionEntry, render } from 'astro:content'
 import BlogPost from '../../layouts/blog-post.astro'
+import { getSortedPosts, PAGE_STEP } from '../../lib/posts'
 
 export const getStaticPaths = async () => {
-  const posts = await getCollection('blog')
-  return posts.map((post) => ({
+  const posts = await getSortedPosts()
+  return posts.map((post, index) => ({
     params: { slug: post.id },
-    props: post,
+    props: {
+      newerPost: posts[index - PAGE_STEP],
+      olderPost: posts[index + PAGE_STEP],
+      post,
+    },
   }))
 }
-type Props = CollectionEntry<'blog'>
+interface Props {
+  post: CollectionEntry<'blog'>
+  newerPost?: CollectionEntry<'blog'>
+  olderPost?: CollectionEntry<'blog'>
+}
 
-const post = Astro.props
+const { post, newerPost, olderPost } = Astro.props
 const { Content, headings } = await render(post)
 
 const WORDS_PER_MINUTE = 200
@@ -21,6 +30,13 @@ const wordCount = post.body?.split(/\s+/gu).length ?? EMPTY_WORD_COUNT
 const minutesRead = Math.max(MINIMUM_MINUTES, Math.round(wordCount / WORDS_PER_MINUTE))
 ---
 
-<BlogPost {...post.data} postId={post.id} minutesRead={minutesRead} headings={headings}>
+<BlogPost
+  {...post.data}
+  postId={post.id}
+  minutesRead={minutesRead}
+  headings={headings}
+  newerPost={newerPost}
+  olderPost={olderPost}
+>
   <Content />
 </BlogPost>

@@ -9,9 +9,23 @@ type Props = CollectionEntry<'blog'>['data'] & {
   postId: string
   minutesRead?: number
   headings?: MarkdownHeading[]
+  newerPost?: CollectionEntry<'blog'>
+  olderPost?: CollectionEntry<'blog'>
 }
 
-const { postId, title, description, pubDate, updatedDate, heroImage, tags, minutesRead, headings = [] } = Astro.props
+const {
+  postId,
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  tags,
+  minutesRead,
+  headings = [],
+  newerPost,
+  olderPost,
+} = Astro.props
 const HEADING_LEVEL_TWO = 2
 const HEADING_LEVEL_THREE = 3
 const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_TWO || depth === HEADING_LEVEL_THREE)
@@ -76,6 +90,62 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
     <div class="prose max-w-none [view-transition-name:page-body] min-[1280px]:col-start-1">
       <slot />
     </div>
+    {
+      (newerPost || olderPost) && (
+        <nav
+          aria-label="More posts"
+          class="mt-11 grid grid-cols-2 gap-6 border-t border-border pt-6 min-[1280px]:col-start-1"
+        >
+          {newerPost && (
+            <a href={`/blog/${newerPost.id}/`} class="group col-start-1 flex min-w-0 flex-col gap-1">
+              <span class="text-xs tracking-[0.08em] text-faint uppercase">newer</span>
+              <span class="flex items-center gap-1.5 text-[15px] font-bold transition-colors group-hover:text-accent-hover">
+                <svg
+                  class="shrink-0"
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+                {newerPost.data.title}
+              </span>
+            </a>
+          )}
+          {olderPost && (
+            <a
+              href={`/blog/${olderPost.id}/`}
+              class="group col-start-2 flex min-w-0 flex-col gap-1 text-right"
+            >
+              <span class="text-xs tracking-[0.08em] text-faint uppercase">older</span>
+              <span class="flex items-center justify-end gap-1.5 text-[15px] font-bold transition-colors group-hover:text-accent-hover">
+                {olderPost.data.title}
+                <svg
+                  class="shrink-0"
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </span>
+            </a>
+          )}
+        </nav>
+      )
+    }
   </article>
   <dialog
     data-lightbox
