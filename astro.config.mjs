@@ -42,5 +42,8 @@ export default defineConfig({
   site: 'https://philljohntony.com',
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      allowedHosts: true,
+    },
   },
 })
