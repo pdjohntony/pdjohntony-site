@@ -1,0 +1,179 @@
+<dialog
+  data-palette
+  class="mx-auto mt-[16vh] mb-auto w-[560px] max-w-[calc(100vw-48px)] scheme-dark overflow-hidden rounded-[14px] bg-surface p-0 text-text shadow-[0_24px_80px_rgba(0,0,0,0.6)] backdrop:bg-[rgba(5,5,8,0.6)] backdrop:backdrop-blur-[3px] motion-safe:open:animate-[page-section-in_200ms_cubic-bezier(0.22,1,0.36,1)_both]"
+>
+  <input
+    data-palette-input
+    type="text"
+    placeholder="search pages, posts, and tags…"
+    autocomplete="off"
+    class="w-full border-b border-border bg-transparent px-5 py-4.5 text-base font-medium text-text outline-none placeholder:text-faint"
+  />
+  <div
+    data-palette-list
+    class="max-h-80 overflow-y-auto p-2 [scrollbar-color:var(--color-disabled)_transparent] [scrollbar-width:thin]"
+  >
+  </div>
+  <div class="flex gap-4.5 border-t border-border px-5 py-3 text-xs text-faint">
+    <span>↑↓ navigate</span>
+    <span>↵ open</span>
+    <span class="ml-auto">esc to close</span>
+  </div>
+</dialog>
+
+<script>
+  interface SearchItem {
+    keywords?: string
+    kind: string
+    label: string
+    url: string
+  }
+
+  const FIRST_INDEX = 0
+  const INDEX_STEP = 1
+  const MAX_VISIBLE_ITEMS = 50
+
+  const dialog = document.querySelector<HTMLDialogElement>('[data-palette]')
+  const input = document.querySelector<HTMLInputElement>('[data-palette-input]')
+  const list = document.querySelector<HTMLElement>('[data-palette-list]')
+
+  const createSpan = (className: string, text: string) => {
+    const span = document.createElement('span')
+    span.className = className
+    span.textContent = text
+    return span
+  }
+
+  const matchesQuery = (item: SearchItem, query: string) =>
+    item.label.toLowerCase().includes(query) || (item.keywords ?? '').toLowerCase().includes(query)
+
+  if (dialog && input && list) {
+    let allItems: SearchItem[] = []
+    let itemsLoaded = false
+    let visibleItems: SearchItem[] = []
+    let selectedIndex = FIRST_INDEX
+
+    if (!/mac|iphone|ipad/iu.test(navigator.platform)) {
+      for (const kbd of document.querySelectorAll('[data-palette-kbd]')) {
+        kbd.textContent = 'ctrl K'
+      }
+    }
+
+    const applySelection = () => {
+      const links = list.querySelectorAll('a')
+      links.forEach((link, index) => {
+        link.classList.toggle('bg-surface-hover', index === selectedIndex)
+        link.classList.toggle('text-text', index === selectedIndex)
+        link.classList.toggle('text-muted', index !== selectedIndex)
+      })
+    }
+
+    const select = (index: number, scroll = false) => {
+      selectedIndex = index
+      applySelection()
+      if (scroll) {
+        list.querySelectorAll('a')[index]?.scrollIntoView({ block: 'nearest' })
+      }
+    }
+
+    const renderItem = (item: SearchItem, index: number) => {
+      const link = document.createElement('a')
+      link.href = item.url
+      link.className = 'flex items-center justify-between gap-4 rounded-lg px-3 py-2.5 text-[15px]'
+      link.append(
+        createSpan('overflow-hidden text-ellipsis whitespace-nowrap', item.label),
+        createSpan('shrink-0 text-xs text-faint', item.kind),
+      )
+      link.addEventListener('mouseenter', () => select(index))
+      list.append(link)
+    }
+
+    const render = () => {
+      list.textContent = ''
+      if (visibleItems.length === FIRST_INDEX) {
+        list.append(createSpan('block px-3 py-5 text-center text-sm text-faint', 'nothing found'))
+        return
+      }
+      visibleItems.forEach((item, index) => renderItem(item, index))
+      applySelection()
+    }
+
+    const applyQuery = () => {
+      const query = input.value.trim().toLowerCase()
+      visibleItems = allItems.filter((item) => matchesQuery(item, query)).slice(FIRST_INDEX, MAX_VISIBLE_ITEMS)
+      selectedIndex = FIRST_INDEX
+      render()
+    }
+
+    const openPalette = async () => {
+      if (!itemsLoaded) {
+        const response = await fetch('/search-index.json')
+        allItems = (await response.json()) as SearchItem[]
+        itemsLoaded = true
+      }
+      input.value = ''
+      if (!dialog.open) {
+        document.documentElement.style.overflow = 'hidden'
+        dialog.showModal()
+      }
+      applyQuery()
+    }
+
+    const togglePalette = () => {
+      if (dialog.open) {
+        dialog.close()
+      } else {
+        void openPalette()
+      }
+    }
+
+    const moveSelection = (offset: number) => {
+      const lastIndex = visibleItems.length - INDEX_STEP
+      select(Math.min(Math.max(selectedIndex + offset, FIRST_INDEX), lastIndex), true)
+    }
+
+    const openSelection = () => {
+      const item = visibleItems[selectedIndex]
+      if (item) {
+        dialog.close()
+        globalThis.location.href = item.url
+      }
+    }
+
+    const keyActions: Record<string, () => void> = {
+      ArrowDown: () => moveSelection(INDEX_STEP),
+      ArrowUp: () => moveSelection(-INDEX_STEP),
+      Enter: openSelection,
+    }
+
+    input.addEventListener('input', applyQuery)
+
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) {
+        dialog.close()
+      }
+    })
+
+    dialog.addEventListener('close', () => {
+      document.documentElement.style.removeProperty('overflow')
+    })
+
+    for (const trigger of document.querySelectorAll('[data-palette-trigger]')) {
+      trigger.addEventListener('click', () => void openPalette())
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault()
+        togglePalette()
+        return
+      }
+      const action = keyActions[event.key]
+      if (!dialog.open || visibleItems.length === FIRST_INDEX || !action) {
+        return
+      }
+      event.preventDefault()
+      action()
+    })
+  }
+</script>
