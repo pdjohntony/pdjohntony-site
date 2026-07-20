@@ -7,7 +7,7 @@ import BaseLayout from './base-layout.astro'
 
 type Props = CollectionEntry<'blog'>['data'] & {
   postId: string
-  minutesRead?: number
+  minutesRead?: string
   headings?: MarkdownHeading[]
   newerPost?: CollectionEntry<'blog'>
   olderPost?: CollectionEntry<'blog'>
@@ -83,7 +83,7 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
           )
         }
         {tags?.map((tag) => <a href={`/tags/${tag}/`} class="transition-colors hover:text-accent-hover">{tag}</a>)}
-        {minutesRead && <span class="ml-auto">{minutesRead} min read</span>}
+        {minutesRead && <span class="ml-auto">{minutesRead}</span>}
       </div>
       {heroImage && <Image width={1160} height={580} src={heroImage} class="mb-10 w-full rounded-[10px]" alt="" />}
     </header>

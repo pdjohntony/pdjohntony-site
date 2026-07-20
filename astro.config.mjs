@@ -11,6 +11,7 @@ import rehypeExternalLinks from 'rehype-external-links'
 import remarkAdmonitionToBlockquoteCallout from 'remark-admonition-to-blockquote-callout'
 
 import { rehypeTitlelessCallouts, remarkTitlelessCallouts } from './src/lib/markdown-callouts.ts'
+import { remarkReadingTime } from './src/lib/remark-reading-time.ts'
 import { codeBlockTransformer } from './src/lib/shiki-code-block.ts'
 
 // https://astro.build/config
@@ -77,7 +78,7 @@ export default defineConfig({
           },
         ],
       ],
-      remarkPlugins: [remarkTitlelessCallouts, remarkAdmonitionToBlockquoteCallout],
+      remarkPlugins: [remarkReadingTime, remarkTitlelessCallouts, remarkAdmonitionToBlockquoteCallout],
     }),
     shikiConfig: {
       transformers: [codeBlockTransformer],
