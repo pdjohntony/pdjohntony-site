@@ -4,6 +4,7 @@ import { rehypeHeadingIds, unified } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
+import robotsTxt from 'astro-robots-txt'
 import { defineConfig, fontProviders } from 'astro/config'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeCallouts from 'rehype-callouts'
@@ -26,7 +27,7 @@ export default defineConfig({
       weights: ['200 800'],
     },
   ],
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap(), robotsTxt({ sitemap: true })],
   markdown: {
     processor: unified({
       rehypePlugins: [
