@@ -4,7 +4,8 @@
   "exclude": ["dist"],
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@blog-images/*": ["./src/assets/blog-images/*"]
     },
     "strictNullChecks": true
   }
