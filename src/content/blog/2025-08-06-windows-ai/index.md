@@ -2,7 +2,7 @@
 title: 'Microsoft is Betting Big on Local AI'
 description: 'I flew to Seattle for a Microsoft training on Windows AI Foundry, Phi Silica, and NPUs. Here is what on-device AI actually means for app developers.'
 pubDate: 2025-08-06 08:00:00 -0500
-heroImage: '@blog-images/20250806_184748.jpg'
+heroImage: './hero.jpg'
 tags: ['travel', 'learning', 'microsoft', 'ai', 'windows', 'dev']
 ---
 

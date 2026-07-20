@@ -2,7 +2,7 @@
 title: "My Tesla's First Real Maintenance: The 12V Battery"
 description: "After five years of almost zero maintenance, my 2020 Model 3 needed its first real repair: a 12V battery, swapped in my driveway by Tesla Mobile Service for $139."
 pubDate: 2025-09-01 08:00:00 -0500
-heroImage: '@blog-images/Screenshot_20250928_102458_Settings.jpg'
+heroImage: './hero.jpg'
 tags: ['tesla', 'ev', 'maintenance']
 ---
 

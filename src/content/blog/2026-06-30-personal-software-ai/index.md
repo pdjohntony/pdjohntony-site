@@ -2,7 +2,7 @@
 title: 'Personal Software: Apps for an Audience of One'
 description: 'AI coding agents broke the old build-vs-buy math. Why I now build bespoke, single-user personal software in an evening and self-host it on my homelab.'
 pubDate: 2026-06-30 08:00:00 -0500
-heroImage: '@blog-images/2026-06-30-personal-software-ai.png'
+heroImage: './hero.png'
 tags: ['ai', 'dev', 'homelab', 'thoughts']
 ---
 

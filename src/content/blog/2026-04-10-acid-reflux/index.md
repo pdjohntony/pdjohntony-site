@@ -2,7 +2,7 @@
 title: 'Acid Reflux: My First Real Health Problem'
 description: 'How I ignored heartburn for months, finally saw a doctor, and learned that debugging your own body is the worst kind of debugging.'
 pubDate: 2026-04-10 08:00:00 -0500
-heroImage: '@blog-images/2026-04-10-acid-reflux.png'
+heroImage: './hero.png'
 tags: ['health', 'personal']
 ---
 

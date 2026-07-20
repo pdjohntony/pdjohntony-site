@@ -2,7 +2,7 @@
 title: 'We Finally Have Fiber at Home'
 description: 'After years of cable upload speeds that embarrassed my homelab, T-Mobile Fiber reached my neighborhood. The install, the speeds, and what changed.'
 pubDate: 2025-08-01 08:00:00 -0500
-heroImage: '@blog-images/20250828_103522.jpg'
+heroImage: './hero.jpg'
 tags: ['homelab', 'tech', 'networking', 'fiber']
 ---
 

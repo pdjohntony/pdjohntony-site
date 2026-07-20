@@ -2,7 +2,7 @@
 title: 'My First Cisco Live: Notes From Orlando 2018'
 description: "A first-timer's retrospective of Cisco Live US 2018 in Orlando: keynotes, breakout sessions, the DevNet Zone, and what I'd do differently next time."
 pubDate: 2018-06-18 08:00:00 -0500
-heroImage: '@blog-images/20180614_162820.jpg'
+heroImage: './hero.jpg'
 tags: ['event', 'travel', 'networking', 'cisco']
 ---
 
@@ -50,7 +50,7 @@ Cisco Live is a good place to knock out an exam if you've been putting one off, 
 
 Here's the thing: I did zero studying for it. Work kept me completely buried in the weeks before the conference, and my backup plan was to cram on the flight to Orlando. Instead I spent the flight too tired to do anything but exist. So I walked into the exam room on nothing but whatever CIPTV2 knowledge my day job had beaten into me.
 
-![My 300-075 CIPTV2 exam results: 867, with 860 needed to pass](@blog-images/20180612_094530.jpg)
+![My 300-075 CIPTV2 exam results: 867, with 860 needed to pass](./exam-results.jpg)
 
 Passing score: 860. My score: 867. Seven points. I'll take it. There's an argument that a pass this narrow with literally no studying is the most efficient exam prep possible - any studying would have been wasted effort on points I didn't need. I don't recommend the strategy, but I'm not giving the cert back either.
 

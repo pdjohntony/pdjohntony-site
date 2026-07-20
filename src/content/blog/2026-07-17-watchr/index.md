@@ -2,7 +2,7 @@
 title: 'Watchr: TV Time Shut Down, So I Built My Own'
 description: 'TV Time shut down, so I took my GDPR export and built Watchr, a self-hosted replacement, in two days with AI: TypeScript, Nuxt, PostgreSQL, Zero, and Capacitor.'
 pubDate: 2026-07-17 08:00:00 -0500
-heroImage: '@blog-images/2026-07-17-watchr.png'
+heroImage: './hero.png'
 tags: ['self-hosted', 'ai', 'dev', 'homelab']
 ---
 

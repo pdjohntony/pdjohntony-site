@@ -2,7 +2,7 @@
 title: 'Giving My Uplift Desk the Wood It Deserved'
 description: 'My Uplift standing desk spent years wearing a cheap IKEA top. Here is why I upgraded to solid black walnut, how the swap went, and what I learned.'
 pubDate: 2025-02-01 08:00:00 -0500
-heroImage: '@blog-images/20250210_104947.jpg'
+heroImage: './hero.jpg'
 tags: ['desk-setup', 'home-office', 'tech']
 ---
 

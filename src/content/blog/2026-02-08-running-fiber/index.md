@@ -2,7 +2,7 @@
 title: 'Running Fiber Upstairs for a 10 Gig Homelab Link'
 description: 'How I ran pre-terminated OS2 fiber from my router to my upstairs homelab, why I picked fiber over Cat6, and what I learned pulling it through the walls.'
 pubDate: 2026-02-08 08:00:00 -0500
-heroImage: '@blog-images/20260207_193739.jpg'
+heroImage: './hero.jpg'
 tags: ['homelab', 'tech', 'networking', 'diy']
 ---
 

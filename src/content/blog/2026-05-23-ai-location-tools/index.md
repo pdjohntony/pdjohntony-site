@@ -2,7 +2,7 @@
 title: 'My AI Knows Where I Am (and When to Bug Me)'
 description: 'How I gave my self-hosted AI assistant tools to see my location via Home Assistant and ping me through ntfy, plus the guardrails that keep it useful instead of creepy.'
 pubDate: 2026-05-23 08:00:00 -0500
-heroImage: '@blog-images/2026-05-23-ai-location-tools.png'
+heroImage: './hero.png'
 tags: ['ai', 'selfhosted', 'automation', 'homelab']
 ---
 

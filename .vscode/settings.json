@@ -1,4 +1,8 @@
 {
+  "workbench.editor.customLabels.enabled": true,
+  "workbench.editor.customLabels.patterns": {
+    "**/src/content/blog/*/index.md": "${dirname}"
+  },
   "editor.codeActionsOnSave": {
     "source.fixAll.oxc": "always"
   },

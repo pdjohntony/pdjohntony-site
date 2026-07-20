@@ -2,7 +2,7 @@
 title: 'My Homelab in 2026: More Fiber, Fewer Regrets'
 description: 'An annual tour of my homelab: Proxmox, a NAS that refuses to die, the Docker stack that runs my house, and what actually changed this year.'
 pubDate: 2026-01-20 08:00:00 -0500
-heroImage: '@blog-images/2026-01-20-homelab.png'
+heroImage: './hero.png'
 tags: ['homelab', 'tech', 'self-hosted', 'proxmox']
 ---
 

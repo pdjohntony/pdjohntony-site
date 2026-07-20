@@ -2,7 +2,7 @@
 title: 'Switching to Mac After Two Decades of Windows'
 description: 'After decades as a Windows developer I switched to an Apple Silicon MacBook. Why I did it, what hurt, the tools that helped, and what I still miss.'
 pubDate: 2025-10-01 08:00:00 -0500
-heroImage: '@blog-images/20251002_135408.jpg'
+heroImage: './hero.jpg'
 tags: ['mac', 'windows', 'dev', 'tech']
 ---
 

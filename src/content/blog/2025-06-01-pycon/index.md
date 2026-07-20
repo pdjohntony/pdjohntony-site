@@ -2,7 +2,7 @@
 title: 'PyCon US 2025: Python Is Getting Fast'
 description: 'My first PyCon US in Pittsburgh: free threading and the JIT, the Pyrefly vs ty type checker race, Python in WebAssembly, and the talks worth watching.'
 pubDate: 2025-06-01 08:00:00 -0500
-heroImage: '@blog-images/20250515_164336.jpg'
+heroImage: './hero.jpg'
 tags: ['event', 'travel', 'dev', 'python', 'pycon']
 ---
 
