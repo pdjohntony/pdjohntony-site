@@ -1,6 +1,6 @@
 ---
-import BlogPage from '../../components/blog-page.astro'
-import { getBlogPages } from '../../lib/posts'
+import BlogPage from '@/components/blog-page.astro'
+import { getBlogPages } from '@/lib/posts'
 
 const [firstPage] = await getBlogPages()
 ---

@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro'
 
-import { getSortedPosts } from '../lib/posts'
+import { getSortedPosts } from '@/lib/posts'
 
 export interface SearchItem {
   keywords?: string

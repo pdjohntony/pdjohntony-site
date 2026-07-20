@@ -1,6 +1,6 @@
 ---
-import BlogPage from '../../components/blog-page.astro'
-import { type BlogPageData, FIRST_PAGE, getBlogPages } from '../../lib/posts'
+import BlogPage from '@/components/blog-page.astro'
+import { type BlogPageData, FIRST_PAGE, getBlogPages } from '@/lib/posts'
 
 export const getStaticPaths = async () => {
   const pages = await getBlogPages()

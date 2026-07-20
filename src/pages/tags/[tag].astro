@@ -1,8 +1,8 @@
 ---
-import BlogListItem from '../../components/blog-list-item.astro'
-import TagFilter from '../../components/tag-filter.astro'
-import BaseLayout from '../../layouts/base-layout.astro'
-import { getSortedPosts } from '../../lib/posts'
+import BlogListItem from '@/components/blog-list-item.astro'
+import TagFilter from '@/components/tag-filter.astro'
+import BaseLayout from '@/layouts/base-layout.astro'
+import { getSortedPosts } from '@/lib/posts'
 
 export const getStaticPaths = async () => {
   const allPosts = await getSortedPosts()
