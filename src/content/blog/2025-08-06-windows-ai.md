@@ -1,17 +1,86 @@
 ---
-title: 'Microsoft is betting big on local AI'
-description: 'I flew to Seattle to learn how Microsoft is making it easier to integrate local AI into apps.'
-pubDate: 'Aug 06 2025'
-heroImage: '../../assets/site-default.jpg'
-tags: ['travel', 'learning', 'microsoft', 'ai']
+title: 'Microsoft is Betting Big on Local AI'
+description: 'I flew to Seattle for a Microsoft training on Windows AI Foundry, Phi Silica, and NPUs. Here is what on-device AI actually means for app developers.'
+pubDate: 2025-08-06 08:00:00 -0500
+heroImage: '@blog-images/20250806_184748.jpg'
+tags: ['travel', 'learning', 'microsoft', 'ai', 'windows', 'dev']
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
+Last week I flew to Seattle for a Microsoft training event about integrating AI into Windows apps. I expected the usual pitch: here's our cloud, here's the API key, here's the invoice. That's not what I got.
 
-Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc. Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra massa massa ultricies mi.
+Almost everything they showed us ran locally. Small language models on the laptop in front of you, inference on an NPU instead of someone else's GPU farm, no network connection required. Microsoft is betting big on local AI, and after a few days of sessions and labs, I think the bet is more serious than most developers realize.
 
-Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
+## Why local AI is suddenly worth caring about
 
-Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id cursus metus aliquam eleifend mi.
+For the last few years, "add AI to your app" has meant "call a cloud API." That works, but the tradeoffs pile up fast:
 
-Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
+- **Privacy**: Every prompt leaves the device. For anything touching customer data, health info, or internal documents, that's a compliance conversation you'd rather not have.
+- **Latency**: A round trip to a datacenter is fine for a chatbot, painful for anything interactive like live captioning or inline text suggestions.
+- **Cost**: Per-token pricing is manageable in a demo and terrifying at scale. A feature that costs money every single time a user touches it changes how you design it.
+- **Offline**: A plane, a hospital basement, a factory floor. Cloud-only AI features just die there.
+
+Local inference flips all four. The model runs on hardware the user already paid for, the data never leaves the machine, and the marginal cost of one more inference is zero. The catch has always been that local models were too weak and the tooling was miserable. The event was essentially Microsoft arguing that both problems are now solved, or at least solvable.
+
+## The hardware bet: NPUs and Copilot+ PCs
+
+The foundation of the whole story is the NPU, a dedicated neural processing unit that now ships in Copilot+ PCs from Qualcomm, Intel, and AMD. Microsoft's bar for the Copilot+ badge is 40+ TOPS of NPU performance, which is enough to run small language models and vision models continuously without spinning up the fans or draining the battery.
+
+That last part matters more than the raw numbers. You can already run local models on a GPU, but a GPU at full tilt turns a laptop into a space heater with a two-hour battery. The NPU pitch is sustained, always-on inference at laptop power budgets. Background features like semantic search over your files, live translation, or image description only make sense on that kind of silicon.
+
+The obvious weakness: this only works on new hardware. The install base of Copilot+ PCs in mid-2025 is a rounding error compared to the total Windows install base. Microsoft knows this, which is why the software story is designed to degrade gracefully. More on that below.
+
+## What Microsoft is actually shipping: Windows AI Foundry
+
+The developer platform is called Windows AI Foundry, which is the evolution of what was previously announced as the Windows Copilot Runtime. It has a few distinct layers, and keeping them straight took me most of day one:
+
+- **Windows AI APIs**: High-level, ready-made APIs for common tasks. Text summarization, rewriting, image description, OCR, image super resolution. You call an API, the OS handles the model. You never download weights or think about quantization.
+- **Phi Silica**: The small language model behind the text APIs. It's a member of Microsoft's Phi family, tuned specifically to run on the NPU. It ships with Windows on Copilot+ PCs, so every app shares one copy of the model instead of each app bundling its own multi-gigabyte blob.
+- **Foundry Local**: A catalog and runtime for bringing your own open models (Phi, Mistral, Qwen, and friends) and running them on-device with a local API endpoint. Think of it as the escape hatch when the built-in APIs don't fit.
+- **Windows ML**: The low-level runtime, built on ONNX Runtime, for running your own ONNX models. This is the successor to the DirectML path, and the headline feature is that it picks the right execution provider (NPU, GPU, or CPU) for whatever hardware it lands on, without you shipping vendor-specific builds.
+
+The layering is the part I like most. If you just want "summarize this text," it's a couple of lines of code. If you're doing something weird, you can drop down a layer without leaving the platform.
+
+Calling Phi Silica from a Windows app looks roughly like this:
+
+```csharp
+using Microsoft.Windows.AI.Text;
+
+var model = await LanguageModel.CreateAsync();
+var result = await model.GenerateResponseAsync(
+    "Summarize this support ticket in two sentences: ...");
+
+Console.WriteLine(result.Text);
+```
+
+No API key, no endpoint URL, no billing meter running. That's a genuinely different mental model from every AI integration I've done in the last two years, and it took a lab exercise for it to fully click.
+
+## The developer story, honestly assessed
+
+The good news first. The high-level APIs are legitimately easy. In the hands-on labs, getting summarization and OCR working in a sample app took minutes, not hours. The "OS manages the model" design solves real problems: shared models mean no redundant downloads, and Microsoft updating Phi Silica means your app gets better without you shipping anything.
+
+Windows ML also impressed me more than I expected. Anyone who has dealt with shipping ONNX models across NVIDIA, AMD, Intel, and Qualcomm hardware knows the execution provider matrix is where dreams go to die. Having the OS own that problem is the right call.
+
+Now the caveats, because there are several.
+
+**The hardware fragmentation is real.** The best APIs require a Copilot+ PC. Your actual users are mostly on machines without an NPU, so every local AI feature needs a fallback plan: degrade to CPU, fall back to cloud, or hide the feature. The platform gives you the detection tools, but the branching logic is your problem.
+
+**Small models are small.** Phi Silica is impressive for its size, but it is not a frontier model and nobody at the event pretended otherwise. It's great at summarization, rewriting, extraction, and classification. It is not going to write your code or reason through a complex multi-step problem. The honest framing I took away: local for the fast, frequent, private tasks, cloud for the heavy ones, and a hybrid architecture that routes between them.
+
+**The naming churn is exhausting.** Windows Copilot Runtime became Windows AI Foundry. DirectML is fading in favor of Windows ML, which itself is a reboot of an older Windows ML. If you're researching this stuff, half the blog posts you'll find describe APIs that have since been renamed. Microsoft gonna Microsoft.
+
+## Practical takeaways if you build apps
+
+If I had to compress the week into advice for other developers:
+
+- **Audit your features for local candidates.** Anything that is high-frequency, latency-sensitive, or privacy-sensitive is a candidate: summarizing, rewriting, OCR, search, classification. These are exactly the tasks small models are good at, and moving them local removes both the latency and the per-call cost.
+- **Design hybrid from day one.** Don't build "local AI features" and "cloud AI features" as separate things. Build capabilities with a routing layer, so the same feature can run on the NPU where available and fall back elsewhere. Retrofitting this later will hurt.
+- **Prototype the free tier of intelligence.** Once inference is free, features that were economically absurd become reasonable. Summarize every notification. Classify every file. Nobody would pay cloud prices for that, but at zero marginal cost, it's just software.
+- **Watch the hardware curve, not the current install base.** NPUs are becoming a default component the same way GPUs did. Building for them today is early, but not that early.
+
+## Was the trip worth it?
+
+Yes, and not just because Seattle in August is genuinely pleasant.
+
+The thing I keep chewing on since flying home is the cost point. Every AI feature I've shipped or scoped in the past two years has had a meter attached to it, and that meter quietly shaped every design decision. Local inference removes the meter. That changes what's worth building, and I don't think most of us have internalized that yet.
+
+Microsoft's execution has the usual rough edges: rebrands, hardware requirements, docs lagging the platform. But the direction is right, and they're further along than I expected. If you build for Windows, the [Windows AI Foundry docs](https://learn.microsoft.com/en-us/windows/ai/) are worth an afternoon of your time. Grab a sample app, run a model on your own laptop, and see how it feels when the inference is free.
