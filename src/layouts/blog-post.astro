@@ -342,7 +342,10 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
 
   @supports (animation-timeline: scroll()) {
     .reading-progress {
-      animation: reading-progress auto linear both;
+      animation-name: reading-progress;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
       animation-timeline: scroll(root block);
     }
   }
