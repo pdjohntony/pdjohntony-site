@@ -28,3 +28,4 @@ local/
 browser-data/
 .agents/
 .claude/
+.wrangler/
