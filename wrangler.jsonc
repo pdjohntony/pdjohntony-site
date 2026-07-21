@@ -5,4 +5,10 @@
   "assets": {
     "directory": "./dist",
   },
+  "routes": [
+    {
+      "pattern": "philljohntony.com",
+      "custom_domain": true,
+    },
+  ],
 }
