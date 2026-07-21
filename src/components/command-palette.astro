@@ -85,6 +85,13 @@
         createSpan('shrink-0 text-xs text-faint', item.kind),
       )
       link.addEventListener('mouseenter', () => select(index))
+      link.addEventListener('click', () => {
+        globalThis.posthog?.capture('search_result_selected', {
+          query_length: input.value.trim().length,
+          result_kind: item.kind,
+          result_position: index + INDEX_STEP,
+        })
+      })
       list.append(link)
     }
 
@@ -106,6 +113,9 @@
     }
 
     const openPalette = async () => {
+      globalThis.posthog?.capture('search_opened', {
+        trigger: 'command_palette',
+      })
       if (!itemsLoaded) {
         const response = await fetch('/search-index.json')
         allItems = (await response.json()) as SearchItem[]
@@ -135,6 +145,11 @@
     const openSelection = () => {
       const item = visibleItems[selectedIndex]
       if (item) {
+        globalThis.posthog?.capture('search_result_selected', {
+          query_length: input.value.trim().length,
+          result_kind: item.kind,
+          result_position: selectedIndex + INDEX_STEP,
+        })
         dialog.close()
         globalThis.location.href = item.url
       }

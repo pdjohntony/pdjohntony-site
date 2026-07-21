@@ -107,7 +107,11 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
           class="mt-11 grid grid-cols-2 gap-6 border-t border-border pt-6 min-[1280px]:col-start-1"
         >
           {newerPost && (
-            <a href={`/blog/${newerPost.id}/`} class="group col-start-1 flex min-w-0 flex-col gap-1">
+            <a
+              href={`/blog/${newerPost.id}/`}
+              data-blog-navigation="newer"
+              class="group col-start-1 flex min-w-0 flex-col gap-1"
+            >
               <span class="text-xs tracking-[0.08em] text-faint uppercase">newer</span>
               <span class="flex items-center gap-1.5 text-[15px] font-bold transition-colors group-hover:text-accent-hover">
                 <svg
@@ -131,6 +135,7 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
           {olderPost && (
             <a
               href={`/blog/${olderPost.id}/`}
+              data-blog-navigation="older"
               class="group col-start-2 flex min-w-0 flex-col gap-1 text-right"
             >
               <span class="text-xs tracking-[0.08em] text-faint uppercase">older</span>
@@ -233,6 +238,9 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
       caption.hidden = !image.alt
       document.documentElement.style.overflow = 'hidden'
       dialog.showModal()
+      globalThis.posthog?.capture('image_lightbox_opened', {
+        has_caption: Boolean(image.alt),
+      })
     }
 
     gallery.querySelectorAll<HTMLImageElement>('img').forEach((image) => initializeImage(image, openImage))
@@ -261,8 +269,12 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
     setCopyButtonState(button, 'Copy code', 'idle')
     button.addEventListener('click', async () => {
       try {
-        await navigator.clipboard.writeText(code.textContent ?? '')
+        const copiedCode = code.textContent ?? ''
+        await navigator.clipboard.writeText(copiedCode)
         setCopyButtonState(button, 'Code copied', 'success')
+        globalThis.posthog?.capture('code_copied', {
+          code_length: copiedCode.length,
+        })
       } catch {
         setCopyButtonState(button, 'Copy failed', 'error')
       }
@@ -280,6 +292,14 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
     block.dataset.copyReady = 'true'
     block.append(createCopyButton(code))
   }
+
+  document.querySelectorAll<HTMLAnchorElement>('[data-blog-navigation]').forEach((link) => {
+    link.addEventListener('click', () => {
+      globalThis.posthog?.capture('blog_navigation_clicked', {
+        direction: link.dataset.blogNavigation,
+      })
+    })
+  })
 
   setupLightbox()
   setupCodeBlocks()

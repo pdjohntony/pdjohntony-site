@@ -1,0 +1,57 @@
+---
+// PostHog analytics initialization for this static Astro site.
+---
+<script
+  is:inline
+  define:vars={{
+    apiKey: import.meta.env.PUBLIC_POSTHOG_PROJECT_TOKEN,
+    apiHost: import.meta.env.PUBLIC_POSTHOG_HOST,
+  }}
+>
+  const appendPostHogScript = (document, config) => {
+    const script = document.createElement('script')
+    script.type = 'text/javascript'
+    script.crossOrigin = 'anonymous'
+    script.async = true
+    script.src = `${config.api_host}/static/array.js`
+    document.head.append(script)
+  }
+
+  const getPostHogInstance = (posthog, name) => {
+    if (!name) {
+      return posthog
+    }
+    posthog[name] = []
+    return posthog[name]
+  }
+
+  const addQueuedMethods = (instance) => {
+    for (const method of ['capture', 'captureException', 'identify', 'reset']) {
+      instance[method] = function enqueue(...args) {
+        instance.push([method, ...args])
+      }
+    }
+  }
+
+  if (!apiKey || !apiHost) {
+    console.error('PostHog environment variables are not configured')
+  } else {
+    const posthog = globalThis.posthog || []
+    if (!posthog['__SV']) {
+      globalThis.posthog = posthog
+      posthog['_i'] = []
+      posthog.init = function init(token, config, name) {
+        appendPostHogScript(document, config)
+        const instance = getPostHogInstance(posthog, name)
+        addQueuedMethods(instance)
+        posthog['_i'].push([token, config, name])
+      }
+      posthog['__SV'] = 1
+    }
+
+    globalThis.posthog.init(apiKey, {
+      api_host: apiHost,
+      defaults: '2026-01-30',
+    })
+  }
+</script>

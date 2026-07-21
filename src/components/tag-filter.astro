@@ -23,13 +23,23 @@ const activeClass = 'text-accent transition-colors hover:text-accent-hover'
     <span class="sr-only hidden group-open:inline">close tag filters</span>
   </summary>
   <div class="hidden flex-wrap items-baseline gap-4 group-open:flex">
-    <a href="/blog" class={activeTag ? inactiveClass : activeClass}>all</a>
+    <a href="/blog" data-tag-filter="all" class={activeTag ? inactiveClass : activeClass}>all</a>
     {
       tags.map((tag) => (
-        <a href={`/tags/${tag}/`} class={tag === activeTag ? activeClass : inactiveClass}>
+        <a href={`/tags/${tag}/`} data-tag-filter={tag} class={tag === activeTag ? activeClass : inactiveClass}>
           {tag}
         </a>
       ))
     }
   </div>
 </details>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-tag-filter]').forEach((link) => {
+    link.addEventListener('click', () => {
+      globalThis.posthog?.capture('tag_filter_selected', {
+        tag: link.dataset.tagFilter,
+      })
+    })
+  })
+</script>

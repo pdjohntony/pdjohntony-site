@@ -38,6 +38,9 @@ const projects = [
       projects.map((project) => (
         <a
           href={project.href}
+          data-project-link
+          data-project-name={project.name}
+          data-project-tech={project.tech}
           class="flex flex-col gap-2.5 rounded-[14px] bg-surface p-6 transition-colors hover:bg-surface-hover"
         >
           <div class="flex items-center justify-between">
@@ -63,3 +66,19 @@ const projects = [
     }
   </div>
 </BaseLayout>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-project-link]').forEach((link) => {
+    link.addEventListener('click', () => {
+      let destinationType = 'external'
+      if (link.origin === globalThis.location.origin) {
+        destinationType = 'internal'
+      }
+      globalThis.posthog?.capture('project_clicked', {
+        destination_type: destinationType,
+        project_name: link.dataset.projectName,
+        project_tech: link.dataset.projectTech,
+      })
+    })
+  })
+</script>

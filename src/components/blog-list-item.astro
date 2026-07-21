@@ -10,7 +10,12 @@ export interface Props {
 const { post } = Astro.props
 ---
 
-<a href={`/blog/${post.id}/`} class="group flex flex-col border-t border-border pt-5.5 pb-6.5">
+<a
+  href={`/blog/${post.id}/`}
+  data-blog-post-link
+  data-post-id={post.id}
+  class="group flex flex-col border-t border-border pt-5.5 pb-6.5"
+>
   <h2
     class="pb-1.5 text-[19px] font-bold transition-colors group-hover:text-accent-hover"
     style={`view-transition-name: post-${post.id}`}
@@ -34,3 +39,13 @@ const { post } = Astro.props
     )
   }
 </a>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-blog-post-link]').forEach((link) => {
+    link.addEventListener('click', () => {
+      globalThis.posthog?.capture('blog_post_selected', {
+        post_id: link.dataset.postId,
+      })
+    })
+  })
+</script>

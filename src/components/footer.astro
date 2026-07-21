@@ -3,9 +3,25 @@ const today = new Date()
 ---
 
 <footer class="mt-18 flex items-center gap-5 border-t border-border pt-7 text-sm text-faint">
-  <a href="https://github.com/pdjohntony" class="transition-colors hover:text-accent-hover">github</a>
-  <a href="https://www.linkedin.com/in/pdjohntony" class="transition-colors hover:text-accent-hover">linkedin</a>
-  <a href="https://twitter.com/pdjohntony" class="transition-colors hover:text-accent-hover">twitter</a>
-  <a href="/rss.xml" class="transition-colors hover:text-accent-hover">rss</a>
+  <a href="https://github.com/pdjohntony" data-social-platform="github" class="transition-colors hover:text-accent-hover">github</a>
+  <a href="https://www.linkedin.com/in/pdjohntony" data-social-platform="linkedin" class="transition-colors hover:text-accent-hover">linkedin</a>
+  <a href="https://twitter.com/pdjohntony" data-social-platform="twitter" class="transition-colors hover:text-accent-hover">twitter</a>
+  <a href="/rss.xml" data-rss-link class="transition-colors hover:text-accent-hover">rss</a>
   <span class="ml-auto">&copy; {today.getFullYear()} phill johntony</span>
 </footer>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-social-platform]').forEach((link) => {
+    link.addEventListener('click', () => {
+      globalThis.posthog?.capture('social_link_clicked', {
+        platform: link.dataset.socialPlatform,
+      })
+    })
+  })
+
+  document.querySelector<HTMLAnchorElement>('[data-rss-link]')?.addEventListener('click', () => {
+    globalThis.posthog?.capture('rss_link_clicked', {
+      placement: 'footer',
+    })
+  })
+</script>
