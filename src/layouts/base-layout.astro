@@ -10,16 +10,33 @@ interface Props {
   title?: string
   description: string
   image?: ImageMetadata
+  imageAlt?: string
   noindex?: boolean
+  type?: 'article' | 'website'
+  publishedTime?: Date
+  modifiedTime?: Date
+  authorUrl?: string
+  tags?: string[]
 }
 
-const { title, description, image, noindex } = Astro.props
+const { title, description, image, imageAlt, noindex, type, publishedTime, modifiedTime, authorUrl, tags } = Astro.props
 const pageTitle = [title, SITE_TITLE].filter(Boolean).join(' - ')
 ---
 
 <html lang="en" class="scrollbar-gutter-stable">
   <head>
-    <BaseHead title={pageTitle} description={description} image={image} noindex={noindex} />
+    <BaseHead
+      title={pageTitle}
+      description={description}
+      image={image}
+      imageAlt={imageAlt}
+      noindex={noindex}
+      type={type}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+      authorUrl={authorUrl}
+      tags={tags}
+    />
   </head>
 
   <body class="bg-bg font-sans text-text selection:bg-accent selection:text-white">

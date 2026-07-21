@@ -31,7 +31,17 @@ const HEADING_LEVEL_THREE = 3
 const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_TWO || depth === HEADING_LEVEL_THREE)
 ---
 
-<BaseLayout title={title} description={description} image={heroImage}>
+<BaseLayout
+  title={title}
+  description={description}
+  image={heroImage}
+  imageAlt={title}
+  type="article"
+  publishedTime={pubDate}
+  modifiedTime={updatedDate}
+  authorUrl={new URL('/about/', Astro.site).href}
+  tags={tags}
+>
   <div
     class="reading-progress fixed top-0 left-0 z-50 h-0.5 w-full origin-left bg-accent"
     aria-hidden="true"
