@@ -12,6 +12,7 @@ import rehypeExternalLinks from 'rehype-external-links'
 import remarkAdmonitionToBlockquoteCallout from 'remark-admonition-to-blockquote-callout'
 
 import { rehypeTitlelessCallouts, remarkTitlelessCallouts } from './src/lib/markdown-callouts.ts'
+import { rehypeMermaid } from './src/lib/rehype-mermaid.ts'
 import { remarkReadingTime } from './src/lib/remark-reading-time.ts'
 import { codeBlockTransformer } from './src/lib/shiki-code-block.ts'
 
@@ -46,6 +47,8 @@ export default defineConfig({
         ],
         rehypeCallouts,
         rehypeTitlelessCallouts,
+        // Shiki runs first, so the renderer reads Mermaid source from its highlighted pre element.
+        rehypeMermaid,
         [
           rehypeExternalLinks,
           {

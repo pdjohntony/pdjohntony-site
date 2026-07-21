@@ -38,6 +38,30 @@ The implementation behind each one is maybe 30 lines of Python calling REST APIs
 
 Notice the location tool returns zones, not coordinates. That was deliberate, and I'll get to why.
 
+Here's the full round trip. The two tool wrappers are the narrow waist between the assistant and the services that know where I am or can reach me.
+
+```mermaid
+flowchart TB
+    P[Phill's phone] -->|GPS and Wi-Fi presence| H[Home Assistant]
+
+    subgraph tools[Privacy boundary: narrow tools]
+        L[get_phill_location]
+        N[notify_phill]
+    end
+
+    A[AI assistant] -->|Location context needed| L
+    L -->|Read current entity and sensors| H
+    H -->|Zone, driving state, and time in zone| L
+    L -->|Coarse answer, no coordinates or history| A
+
+    A -->|Allowlisted message and priority| N
+    N -->|Rate limits and quiet hours| T[Self-hosted ntfy]
+    T -->|Push notification| P
+
+    L -.->|Tool call| G[(Audit log)]
+    N -.->|Tool call and notification| G
+```
+
 ## Location comes from Home Assistant, because I already had it
 
 I didn't stand up anything new for this. The Home Assistant companion app on my phone has been reporting GPS and wifi-based presence for years, powering the usual automations. Every phone in the house shows up as a `person` entity with a state like `home`, `work`, or a named zone.

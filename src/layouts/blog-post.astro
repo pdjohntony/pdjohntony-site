@@ -371,6 +371,18 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
     height: 100%;
   }
 
+  .prose .code-block > .mermaid-diagram {
+    display: block;
+    width: 100%;
+    min-width: 42rem;
+    height: auto;
+    padding: 1rem;
+  }
+
+  .prose .code-block:has(> .mermaid-diagram) {
+    overflow-x: auto;
+  }
+
   .prose .code-block pre {
     margin: 0;
     border-radius: 0;
