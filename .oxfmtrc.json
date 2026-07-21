@@ -6,7 +6,7 @@
   "semi": false,
   "singleQuote": true,
   "trailingComma": "all",
-  "ignorePatterns": ["node_modules/**", ".astro/**", "dist/**", ".local/**"],
+  "ignorePatterns": ["node_modules/**", ".astro/**", "dist/**", ".local/**", "**/*.md", "**/*.mdx"],
   "sortImports": true,
   "sortPackageJson": true,
   "sortTailwindcss": {
