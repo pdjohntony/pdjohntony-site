@@ -38,7 +38,7 @@ const pageTitle = [title, SITE_TITLE].filter(Boolean).join(' - ')
       authorUrl={authorUrl}
       tags={tags}
     />
-    <PostHog />
+    {import.meta.env.PROD && <PostHog />}
   </head>
 
   <body class="bg-bg font-sans text-text selection:bg-accent selection:text-white">

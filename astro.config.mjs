@@ -2,6 +2,7 @@
 
 import { rehypeHeadingIds, unified } from '@astrojs/markdown-remark'
 import mdx from '@astrojs/mdx'
+import partytown from '@astrojs/partytown'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
 import robotsTxt from 'astro-robots-txt'
@@ -28,7 +29,12 @@ export default defineConfig({
       weights: ['200 800'],
     },
   ],
-  integrations: [mdx(), sitemap(), robotsTxt({ sitemap: true })],
+  integrations: [
+    mdx(),
+    partytown({ config: { forward: ['posthog.capture'] } }),
+    sitemap(),
+    robotsTxt({ sitemap: true }),
+  ],
   markdown: {
     processor: unified({
       rehypePlugins: [
