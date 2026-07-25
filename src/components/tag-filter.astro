@@ -10,35 +10,113 @@ const inactiveClass = 'text-faint transition-colors hover:text-accent-hover'
 const activeClass = 'text-accent transition-colors hover:text-accent-hover'
 ---
 
-<details class="group flex flex-row-reverse flex-wrap items-baseline justify-start gap-4">
+<details data-tag-filter class="group contents">
   <summary
     class:list={[
-      'cursor-pointer list-none px-1.5 py-2 -m-1.5 transition-colors hover:text-accent-hover [&::-webkit-details-marker]:hidden',
+      'col-start-2 row-start-1 -m-1.5 inline-flex cursor-pointer list-none items-center gap-1.5 px-1.5 py-2 transition-colors hover:text-accent-hover [&::-webkit-details-marker]:hidden',
       activeTag ? 'text-accent' : 'text-faint',
     ]}
   >
-    <span aria-hidden="true" class="group-open:hidden">{activeLabel}</span>
+    <span aria-hidden="true">{activeLabel}</span>
     <span class="sr-only group-open:hidden">open tag filters</span>
-    <span aria-hidden="true" class="hidden group-open:inline">×</span>
+    <svg
+      data-tag-filter-icon
+      class="transition-transform duration-300 ease-out motion-reduce:transition-none"
+      width="10"
+      height="10"
+      viewBox="0 0 10 10"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m2 3.5 3 3 3-3" />
+    </svg>
     <span class="sr-only hidden group-open:inline">close tag filters</span>
   </summary>
-  <div class="hidden flex-wrap items-baseline gap-4 group-open:flex">
-    <a href="/blog" data-tag-filter="all" class={activeTag ? inactiveClass : activeClass}>all</a>
-    {
-      tags.map((tag) => (
-        <a href={`/tags/${tag}/`} data-tag-filter={tag} class={tag === activeTag ? activeClass : inactiveClass}>
-          {tag}
-        </a>
-      ))
-    }
+  <div
+    data-tag-filter-panel
+    class:list={[
+      'invisible row-start-2 grid grid-rows-[0fr] transition-[grid-template-rows,visibility] duration-300 ease-out [transition-delay:0ms,300ms] motion-reduce:transition-none data-open:visible data-open:grid-rows-[1fr] data-open:[transition-delay:0ms,0ms]',
+      activeTag && 'col-span-4',
+      !activeTag && 'col-span-3',
+    ]}
+  >
+    <div class="overflow-hidden">
+      <div class="flex flex-wrap items-baseline gap-4 pt-4">
+        <a href="/blog" data-tag-filter-link="all" class={activeTag ? inactiveClass : activeClass}>all</a>
+        {
+          tags.map((tag) => (
+            <a href={`/tags/${tag}/`} data-tag-filter-link={tag} class={tag === activeTag ? activeClass : inactiveClass}>
+              {tag}
+            </a>
+          ))
+        }
+      </div>
+    </div>
   </div>
 </details>
+{
+  activeTag && (
+    <a
+      href="/blog"
+      data-tag-filter-link="all"
+      class="col-start-3 row-start-1 -m-1.5 px-1.5 py-2 text-faint transition-colors hover:text-accent-hover"
+    >
+      all posts
+    </a>
+  )
+}
+
+<style>
+  [data-tag-filter][data-expanded] [data-tag-filter-icon] {
+    transform: rotate(180deg);
+  }
+</style>
 
 <script>
-  document.querySelectorAll<HTMLAnchorElement>('[data-tag-filter]').forEach((link) => {
+  const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
+
+  document.querySelectorAll<HTMLDetailsElement>('[data-tag-filter]').forEach((filter) => {
+    const summary = filter.querySelector('summary')
+    const panel = filter.querySelector<HTMLElement>('[data-tag-filter-panel]')
+    if (!summary || !panel) {
+      return
+    }
+
+    summary.addEventListener('click', (event) => {
+      event.preventDefault()
+      if (filter.open) {
+        delete filter.dataset.expanded
+        delete panel.dataset.open
+        if (globalThis.matchMedia(REDUCED_MOTION_QUERY).matches) {
+          filter.open = false
+        }
+        return
+      }
+
+      filter.open = true
+      filter.dataset.expanded = ''
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          panel.dataset.open = ''
+        })
+      })
+    })
+
+    panel.addEventListener('transitionend', (event) => {
+      if (event.propertyName === 'grid-template-rows' && !Object.hasOwn(panel.dataset, 'open')) {
+        filter.open = false
+      }
+    })
+  })
+
+  document.querySelectorAll<HTMLAnchorElement>('[data-tag-filter-link]').forEach((link) => {
     link.addEventListener('click', () => {
       globalThis.posthog?.capture('tag_filter_selected', {
-        tag: link.dataset.tagFilter,
+        tag: link.dataset.tagFilterLink,
       })
     })
   })

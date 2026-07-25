@@ -23,12 +23,12 @@ const { posts, tags } = Astro.props
 ---
 
 <BaseLayout title={tag} description={`Posts tagged with ${tag}`}>
-  <div class="mt-4 mb-5 flex flex-wrap items-baseline justify-between gap-4 [view-transition-name:page-intro]">
-    <h1 class="text-[32px] font-extrabold tracking-[-0.02em]">blog</h1>
-    <div class="flex flex-wrap items-baseline justify-end gap-4 text-[13px]">
-      <TagFilter tags={tags} activeTag={tag} />
-      <a href="/rss.xml" class="text-faint transition-colors hover:text-accent-hover">rss</a>
-    </div>
+  <div
+    class="mt-4 mb-5 grid grid-cols-[minmax(0,1fr)_auto_auto_auto] items-baseline gap-x-4 text-[13px] [view-transition-name:page-intro]"
+  >
+    <h1 class="col-start-1 row-start-1 text-[32px] font-extrabold tracking-[-0.02em]">blog</h1>
+    <TagFilter tags={tags} activeTag={tag} />
+    <a href="/rss.xml" class="col-start-4 row-start-1 text-faint transition-colors hover:text-accent-hover">rss</a>
   </div>
   <div class="flex flex-col [view-transition-name:page-body]">
     {posts.map((post) => <BlogListItem post={post} />)}

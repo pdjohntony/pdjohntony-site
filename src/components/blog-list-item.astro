@@ -23,9 +23,15 @@ const { post } = Astro.props
     {post.data.title}
   </h2>
   <p class="pb-2 text-[15px] leading-[1.55] text-muted">{post.data.description}</p>
-  <div class="flex gap-4.5 text-[13px] text-faint lowercase">
-    <FormattedDate date={post.data.pubDate} />
-    {post.data.tags?.map((tag) => <span>{tag}</span>)}
+  <div class="flex min-w-0 text-[13px] text-faint lowercase">
+    <span class="shrink-0"><FormattedDate date={post.data.pubDate} /></span>
+    {
+      post.data.tags && post.data.tags.length > 0 && (
+        <span class="ml-4.5 hidden min-w-0 flex-1 overflow-hidden text-right text-ellipsis whitespace-nowrap sm:block">
+          {post.data.tags.map((tag) => <span class="not-last:mr-4.5">{tag}</span>)}
+        </span>
+      )
+    }
   </div>
   {
     post.data.heroImage && (

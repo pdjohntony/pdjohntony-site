@@ -46,6 +46,28 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
     class="reading-progress fixed top-0 left-0 z-50 h-0.5 w-full origin-left bg-accent"
     aria-hidden="true"
   ></div>
+  <button
+    type="button"
+    data-scroll-top
+    disabled
+    aria-hidden="true"
+    aria-label="scroll to top"
+    class="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-40 flex size-10 translate-y-2 cursor-pointer items-center justify-center rounded-full bg-surface text-faint opacity-0 transition-[color,background-color,opacity,transform] duration-200 ease-out hover:bg-surface-hover hover:text-accent-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:pointer-events-none disabled:cursor-default sm:right-12 sm:bottom-12 enabled:translate-y-0 enabled:opacity-100 motion-reduce:transition-none"
+  >
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.75"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m3 8.5 4-4 4 4" />
+    </svg>
+  </button>
   <article
     data-lightbox-gallery
     class="mt-4 [&_img]:cursor-zoom-in [&_img:focus-visible]:outline-2 [&_img:focus-visible]:outline-offset-4 [&_img:focus-visible]:outline-accent min-[1280px]:grid min-[1280px]:w-252.5 min-[1280px]:grid-cols-[768px_210px] min-[1280px]:gap-x-8"
@@ -75,7 +97,7 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
         </nav>
       )
     }
-    <header class="[view-transition-name:page-intro]">
+    <header data-article-header class="[view-transition-name:page-intro]">
       <h1
         class="mt-0 mb-4 text-4xl leading-[1.15] font-extrabold tracking-[-0.02em]"
         style={`view-transition-name: post-${postId}`}
@@ -92,7 +114,6 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
             </span>
           )
         }
-        {tags?.map((tag) => <a href={`/tags/${tag}/`} class="transition-colors hover:text-accent-hover">{tag}</a>)}
         {minutesRead && <span class="ml-auto">{minutesRead}</span>}
       </div>
       {heroImage && <Image width={1160} src={heroImage} class="mb-10 w-full rounded-[10px]" alt="" />}
@@ -100,6 +121,17 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
     <div class="prose max-w-none [view-transition-name:page-body] min-[1280px]:col-start-1">
       <slot />
     </div>
+    {
+      tags && tags.length > 0 && (
+        <div class="mt-11 flex flex-wrap gap-x-4.5 gap-y-2 text-[13px] text-faint lowercase min-[1280px]:col-start-1">
+          {tags.map((tag) => (
+            <a href={`/tags/${tag}/`} class="transition-colors hover:text-accent-hover">
+              {tag}
+            </a>
+          ))}
+        </div>
+      )
+    }
     {
       (newerPost || olderPost) && (
         <nav
@@ -255,6 +287,60 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
     document.querySelectorAll<HTMLElement>('.code-block').forEach((block) => initializeCodeBlock(block))
   }
 
+  const EMPTY_PROGRESS = 0
+  const FULL_PROGRESS = 1
+  const PAGE_TOP = 0
+  const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
+
+  const updateReadingProgress = (progress: HTMLElement, scrollingElement: Element) => {
+    const maxScroll = scrollingElement.scrollHeight - scrollingElement.clientHeight
+    const ratio = Math.min(
+      Math.max(scrollingElement.scrollTop / Math.max(maxScroll, FULL_PROGRESS), EMPTY_PROGRESS),
+      FULL_PROGRESS,
+    )
+    progress.style.transform = `scaleX(${ratio})`
+  }
+
+  const setupReadingProgress = () => {
+    const progress = document.querySelector<HTMLElement>('.reading-progress')
+    const { scrollingElement } = document
+    if (!progress || !scrollingElement || progress.dataset.ready) {
+      return
+    }
+
+    progress.dataset.ready = 'true'
+    const update = () => updateReadingProgress(progress, scrollingElement)
+    update()
+    globalThis.addEventListener('scroll', update, { passive: true })
+    globalThis.addEventListener('resize', update, { passive: true })
+  }
+
+  const setupScrollToTop = () => {
+    const articleHeader = document.querySelector<HTMLElement>('[data-article-header]')
+    const button = document.querySelector<HTMLButtonElement>('[data-scroll-top]')
+    if (!articleHeader || !button || button.dataset.ready) {
+      return
+    }
+
+    button.dataset.ready = 'true'
+    button.addEventListener('click', () => {
+      let behavior: ScrollBehavior = 'smooth'
+      if (globalThis.matchMedia(REDUCED_MOTION_QUERY).matches) {
+        behavior = 'auto'
+      }
+      globalThis.scrollTo({ behavior, top: PAGE_TOP })
+    })
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry) {
+        return
+      }
+      button.disabled = entry.isIntersecting
+      button.setAttribute('aria-hidden', String(entry.isIntersecting))
+    })
+    observer.observe(articleHeader)
+  }
+
   const setCopyButtonState = (button: HTMLButtonElement, label: string, state: 'idle' | 'success' | 'error') => {
     button.setAttribute('aria-label', label)
     button.dataset.copyState = state
@@ -303,19 +389,18 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
 
   setupLightbox()
   setupCodeBlocks()
+  setupReadingProgress()
+  setupScrollToTop()
   document.addEventListener('astro:page-load', setupLightbox)
   document.addEventListener('astro:page-load', setupCodeBlocks)
+  document.addEventListener('astro:page-load', setupReadingProgress)
+  document.addEventListener('astro:page-load', setupScrollToTop)
 </script>
 
 <style>
-  @keyframes reading-progress {
-    to {
-      transform: scaleX(1);
-    }
-  }
-
   .reading-progress {
     transform: scaleX(0);
+    will-change: transform;
   }
 
   .toc-links {
@@ -357,16 +442,6 @@ const tableOfContents = headings.filter(({ depth }) => depth === HEADING_LEVEL_T
 
     [data-lightbox][open]::backdrop {
       opacity: 0;
-    }
-  }
-
-  @supports (animation-timeline: scroll()) {
-    .reading-progress {
-      animation-name: reading-progress;
-      animation-duration: auto;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-timeline: scroll(root block);
     }
   }
 
